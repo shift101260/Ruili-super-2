@@ -84,29 +84,32 @@
             <span>身分：<strong>管理者</strong></span>
             <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
         </div>
-    <!-- 右側主畫面內容容器 -->
-<main class="ruili-main">
-    
-    <!-- 📱 手機版專屬頂部列 (只有在手機螢幕才會顯示) -->
-    <div class="mobile-header-bar md:hidden flex items-center justify-between px-4 py-3 bg-[#2C2A29] text-white border-b border-[#292524]">
-    <!-- 左側：Logo 與名稱 -->
-    <div class="flex items-center space-x-3">
-        <div class="bg-[#D4A373] text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm shadow-xs">睿</div>
-        <span class="text-xs font-bold tracking-wider">睿立集團系統</span>
-    </div>
-    <!-- 右側：漢堡選單按鈕 -->
-<button onclick="toggleSidebar()" class="text-stone-300 hover:text-white p-2 focus:outline-none">
-    <i class="fa-solid fa-bars text-lg"></i>
-</button>
+    </aside>
 
-    <!-- 原本的主畫面內容 -->
-    <div id="app-container" class="ruili-container space-y-6">
-        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
-            <h2 class="text-lg font-bold text-stone-900">戰情室總覽</h2>
-            <p class="text-xs text-stone-500">歡迎進入睿立集團精密營運系統，請從左側切換功能或年度案件。</p>
+    <!-- 右側主畫面內容容器 -->
+    <main class="ruili-main">
+        
+        <!-- 📱 手機版專屬頂部列 (只有在手機螢幕才會顯示) -->
+        <div class="mobile-header-bar md:hidden flex items-center justify-between px-4 py-3 bg-[#2C2A29] text-white border-b border-[#292524]">
+            <!-- 左側：Logo 與名稱 -->
+            <div class="flex items-center space-x-3">
+                <div class="bg-[#D4A373] text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm shadow-xs">睿</div>
+                <span class="text-xs font-bold tracking-wider">睿立集團系統</span>
+            </div>
+            <!-- 右側：漢堡選單按鈕 -->
+            <button onclick="toggleSidebar()" class="text-stone-300 hover:text-white p-2 focus:outline-none">
+                <i class="fa-solid fa-bars text-lg"></i>
+            </button>
         </div>
-    </div>
-</main>
+
+        <!-- 原本的主畫面內容 -->
+        <div id="app-container" class="ruili-container space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
+                <h2 class="text-lg font-bold text-stone-900">戰情室總覽</h2>
+                <p class="text-xs text-stone-500">歡迎進入睿立集團精密營運系統，請從左側切換功能或年度案件。</p>
+            </div>
+        </div>
+    </main>
 
     <!-- 頁面切換控制邏輯 -->
     <script>
@@ -137,6 +140,7 @@
                 container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">結案中心</h2><p class="text-xs text-stone-500">PDF 結案報告與歸檔。</p></div>`;
             }
         }
+
         // 控制手機版側邊欄開關的函式
         function toggleSidebar() {
             const sidebar = document.querySelector('.ruili-sidebar');
