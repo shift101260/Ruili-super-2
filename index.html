@@ -136,56 +136,80 @@
                 
                 // 模擬該年度的五大狀態案件資料
                 let cases = [
-                    { id: `${year}-01`, name: '大雅區農地變更專案', client: '張先生', status: '簽約中' },
-                    { id: `${year}-02`, name: '烏日區工廠合法化', client: '黃董事長', status: '評估中' },
-                    { id: `${year}-03`, name: '潭子區綠能用地申設', client: '林總經理', status: '結案歸檔' },
-                    { id: `${year}-04`, name: '西屯區資產配置顧問', client: '陳小姐', status: '失敗' },
-                    { id: `${year}-05`, name: '北屯區土地重劃案', client: '王董', status: '廢件' }
+                    { id: `${year}-01`, name: '大雅區農地變更專案', client: '張先生', service: '農地變更', progress: '簽約中', amount: 'NT$ 2,500,000', note: '預計118通檢', status: '簽約中' },
+                    { id: `${year}-02`, name: '烏日區工廠合法化', client: '黃董事長', service: '特定工廠專用區', progress: '評估中', amount: 'NT$ 2,070,000', note: '廠房打掉重蓋，太陽能自建', status: '評估中' },
+                    { id: `${year}-03`, name: '潭子區綠能用地申設', client: '林總經理', service: '綠能申設', progress: '結案歸檔', amount: 'NT$ 1,500,000', note: '已完成全數審查', status: '結案歸檔' },
+                    { id: `${year}-04`, name: '西屯區資產配置顧問', client: '陳小姐', service: '資產顧問', progress: '失敗', amount: 'NT$ 0', note: '客戶端暫緩投資', status: '失敗' },
+                    { id: `${year}-05`, name: '北屯區土地重劃案', client: '王董', service: '土地重劃', progress: '廢件', amount: 'NT$ 0', note: '條件不符撤案', status: '廢件' }
                 ];
 
-                // 建立五大垂直區塊的分類容器
-                const statuses = [
-                    { key: '簽約中', title: '1. 簽約區塊', color: 'border-blue-200 bg-blue-50/50 text-blue-900', badge: 'bg-blue-100 text-blue-800' },
-                    { key: '評估中', title: '2. 評估區塊', color: 'border-amber-200 bg-amber-50/50 text-amber-900', badge: 'bg-amber-100 text-amber-800' },
-                    { key: '結案歸檔', title: '3. 結案區塊', color: 'border-emerald-200 bg-emerald-50/50 text-emerald-900', badge: 'bg-emerald-100 text-emerald-800' },
-                    { key: '廢件', title: '4. 廢件區塊', color: 'border-stone-200 bg-stone-100/50 text-stone-700', badge: 'bg-stone-200 text-stone-700' },
-                    { key: '失敗', title: '5. 失敗區塊', color: 'border-rose-200 bg-rose-50/50 text-rose-900', badge: 'bg-rose-100 text-rose-800' }
+                // 定義五大垂直堆疊區塊的樣式與標題
+                const sections = [
+                    { key: '簽約中', title: '簽約案件', color: 'text-blue-600 bg-blue-50/80 border-blue-200', badge: 'bg-blue-100 text-blue-800' },
+                    { key: '評估中', title: '案件評估', color: 'text-amber-600 bg-amber-50/80 border-amber-200', badge: 'bg-amber-100 text-amber-800' },
+                    { key: '結案歸檔', title: '結案中心', color: 'text-emerald-600 bg-emerald-50/80 border-emerald-200', badge: 'bg-emerald-100 text-emerald-800' },
+                    { key: '廢件', title: '廢件專區', color: 'text-stone-600 bg-stone-100/80 border-stone-200', badge: 'bg-stone-200 text-stone-700' },
+                    { key: '失敗', title: '失敗案件', color: 'text-rose-600 bg-rose-50/80 border-rose-200', badge: 'bg-rose-100 text-rose-800' }
                 ];
 
-                // 組合五大垂直欄位的 HTML 結構
-                let columnsHtml = statuses.map(col => {
-                    // 過濾出屬於該狀態的案件
-                    let filteredCases = cases.filter(c => c.status === col.key);
-                    let itemsHtml = filteredCases.length > 0 ? filteredCases.map(c => `
-                        <div class="p-3 bg-white rounded-xl border border-stone-200 shadow-2xs space-y-1 text-xs">
-                            <div class="font-bold text-stone-900">${c.id}</div>
-                            <div class="text-stone-700">${c.name}</div>
-                            <div class="text-[10px] text-stone-400">客戶：${c.client}</div>
-                        </div>
-                    `).join('') : `<div class="text-center py-6 text-stone-400 text-xs">目前無案件</div>`;
+                // 產生上下垂直堆疊的區塊 HTML
+                let sectionsHtml = sections.map(sec => {
+                    let filtered = cases.filter(c => c.status === sec.key);
+                    
+                    let rowsHtml = filtered.length > 0 ? filtered.map(c => `
+                        <tr class="border-b border-stone-100 hover:bg-stone-50/50 transition">
+                            <td class="py-3 px-4 text-stone-900 font-medium">${c.client}</td>
+                            <td class="py-3 px-4 text-stone-600">${c.service}</td>
+                            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-stone-100 text-stone-700 rounded-full text-[11px] font-bold">${c.progress}</span></td>
+                            <td class="py-3 px-4 text-stone-900 font-bold">${c.amount}</td>
+                            <td class="py-3 px-4 text-stone-500 truncate max-w-xs">${c.note}</td>
+                        </tr>
+                    `).join('') : `
+                        <tr>
+                            <td colspan="5" class="py-6 text-center text-stone-400 text-xs">目前無相關案件記錄</td>
+                        </tr>
+                    `;
 
                     return `
-                        <div class="flex-1 min-w-[220px] rounded-2xl border ${col.color} p-4 flex flex-col space-y-3 shadow-2xs">
-                            <div class="font-bold text-xs flex items-center justify-between pb-2 border-b border-stone-200/60">
-                                <span>${col.title}</span>
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${col.badge}">${filteredCases.length}</span>
+                        <div class="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden">
+                            <!-- 區塊標題列 -->
+                            <div class="px-6 py-3.5 border-b border-stone-200 flex items-center justify-between ${sec.color}">
+                                <div class="font-bold text-sm flex items-center space-x-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-current"></span>
+                                    <span>${sec.title}</span>
+                                </div>
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${sec.badge}">${filtered.length} 件</span>
                             </div>
-                            <div class="space-y-2 flex-1">
-                                ${itemsHtml}
+                            <!-- 表格清單 -->
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs">
+                                    <thead>
+                                        <tr class="bg-stone-50/70 border-b border-stone-200 text-stone-400 font-medium">
+                                            <th class="py-2.5 px-4">客戶名稱</th>
+                                            <th class="py-2.5 px-4">服務細項</th>
+                                            <th class="py-2.5 px-4">工作進度</th>
+                                            <th class="py-2.5 px-4">簽約金額</th>
+                                            <th class="py-2.5 px-4">案件即時說明</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${rowsHtml}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     `;
                 }).join('');
 
                 container.innerHTML = `
-                    <div class="space-y-4">
+                    <div class="space-y-6">
                         <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-2">
                             <h2 class="text-lg font-bold text-stone-900">${year} 年度案件管理中心</h2>
-                            <p class="text-xs text-stone-500">採五大垂直區塊並列檢視（簽約、評估、結案、廢件、失敗），全方位掌握集團營運進度。</p>
+                            <p class="text-xs text-stone-500">依您的習慣採用上下垂直堆疊的專業報表清單，方便逐一檢視各狀態案件細節。</p>
                         </div>
-                        <!-- 五大垂直區塊 RWD 橫向滾動容器 -->
-                        <div class="flex gap-4 overflow-x-auto pb-4">
-                            ${columnsHtml}
+                        <!-- 上下垂直堆疊容器 -->
+                        <div class="space-y-6">
+                            ${sectionsHtml}
                         </div>
                     </div>
                 `;
