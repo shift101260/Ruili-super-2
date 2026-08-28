@@ -111,10 +111,10 @@
 
     <!-- 頁面切換與控制邏輯 -->
     <script>
-        // 模擬全域案件資料庫 (支援跨年度與同年份狀態拋轉)
+        // 模擬全集團案件資料庫
         let globalCasesData = {
             '2027': [
-                { id: '2027-01', name: '烏日區未來產業專區', client: '何董事長', service: '土地變更', progress: '評估中', amount: 'NT$ 3,000,000', note: '審查準備中', status: '評估中' }
+                { id: '2027-01', name: '烏日區未來產業專區', client: '何董事長', service: '土地變更', progress: '評估中', amount: 'NT$ 3,000,000', note: '審查準備中', status: '案件評估' }
             ],
             '2026': [
                 { id: '2026-01', name: '大雅區農地變更專案', client: '張先生', service: '農地變更', progress: '簽約中', amount: 'NT$ 2,500,000', note: '預計118通檢', status: '簽約案件' },
@@ -161,7 +161,6 @@
                         </div>
                     </div>`;
             } else if(moduleName === 'all-cases') {
-                // 🌟 全集團案件總覽（跨年份集中檢索）
                 container.innerHTML = `
                     <div class="space-y-6">
                         <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-3">
@@ -221,7 +220,6 @@
             }
         }
 
-        // 渲染全集團總覽表格資料列
         function renderAllCasesRows() {
             let html = '';
             for (let yr in globalCasesData) {
@@ -240,7 +238,6 @@
             return html || `<tr><td colspan="6" class="py-6 text-center text-stone-400 text-xs">目前無任何案件記錄</td></tr>`;
         }
 
-        // 全集團搜尋過濾
         function filterGlobalCases() {
             const keyword = document.getElementById('global-search-input').value.toLowerCase();
             const rows = document.querySelectorAll('.case-row-item');
@@ -250,10 +247,9 @@
             });
         }
 
-        // 渲染指定年度的案件管理中心畫面（含按鈕與勾選框）
+        // 渲染指定年度案件管理中心（搜尋功能改為跨所有年份搜尋）
         function renderYearManagementView(year) {
             const container = document.getElementById('app-container');
-            let cases = globalCasesData[year] || [];
 
             const sections = [
                 { key: '簽約案件', title: '簽約案件', dotColor: 'bg-blue-500', badge: 'bg-blue-50 text-blue-700 border border-blue-200' },
@@ -264,39 +260,50 @@
             ];
 
             let sectionsHtml = sections.map(sec => {
-                let filtered = cases.filter(c => c.status === sec.key);
-                
-                let rowsHtml = filtered.length > 0 ? filtered.map(c => `
-                    <tr class="border-b border-stone-100 hover:bg-stone-50/85 transition-colors case-row" data-name="${c.client}" data-note="${c.note}">
-                        <td class="py-3 px-4 w-10 text-center">
-                            <input type="checkbox" class="case-checkbox rounded border-stone-300 text-sky-600 focus:ring-sky-500" value="${c.id}">
-                        </td>
-                        <td class="py-3 px-4 text-stone-900 font-semibold">${c.client}</td>
-                        <td class="py-3 px-4 text-stone-600">${c.service}</td>
-                        <td class="py-3 px-4"><span class="px-2.5 py-1 bg-stone-100/80 text-stone-700 rounded-lg text-[11px] font-medium">${c.progress}</span></td>
-                        <td class="py-3 px-4 text-stone-900 font-bold">${c.amount}</td>
-                        <td class="py-3 px-4 text-stone-500 truncate max-w-xs">${c.note}</td>
-                    </tr>
-                `).join('') : `
-                    <tr>
-                        <td colspan="6" class="py-6 text-center text-stone-400 text-xs">目前無相關案件記錄</td>
-                    </tr>
-                `;
+                let allYearRowsHtml = '';
+                let totalCount = 0;
+
+                // 跨所有年份抓取符合該狀態的案件
+                for (let yr in globalCasesData) {
+                    let filtered = globalCasesData[yr].filter(c => c.status === sec.key);
+                    totalCount += filtered.length;
+
+                    filtered.forEach(c => {
+                        allYearRowsHtml += `
+                            <tr class="border-b border-stone-100 hover:bg-stone-50/85 transition-colors case-row" data-keyword="${c.client} ${c.name} ${c.service} ${c.note} ${yr}">
+                                <td class="py-3 px-4 w-10 text-center">
+                                    <input type="checkbox" class="case-checkbox rounded border-stone-300 text-sky-600 focus:ring-sky-500" value="${yr}:${c.id}">
+                                </td>
+                                <td class="py-3 px-4 text-stone-500 font-bold">${yr}</td>
+                                <td class="py-3 px-4 text-stone-900 font-semibold">${c.client}</td>
+                                <td class="py-3 px-4 text-stone-600">${c.service}</td>
+                                <td class="py-3 px-4"><span class="px-2.5 py-1 bg-stone-100/80 text-stone-700 rounded-lg text-[11px] font-medium">${c.progress}</span></td>
+                                <td class="py-3 px-4 text-stone-900 font-bold">${c.amount}</td>
+                                <td class="py-3 px-4 text-stone-500 truncate max-w-xs">${c.note}</td>
+                            </tr>
+                        `;
+                    });
+                }
+
+                if(!allYearRowsHtml) {
+                    allYearRowsHtml = `<tr><td colspan="7" class="py-6 text-center text-stone-400 text-xs">目前無相關案件記錄</td></tr>`;
+                }
 
                 return `
-                    <div class="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden mb-6">
+                    <div class="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden mb-6 section-card" data-section="${sec.key}">
                         <div class="px-6 py-3.5 bg-stone-50/60 border-b border-stone-200 flex items-center justify-between">
                             <div class="font-bold text-xs text-stone-800 flex items-center space-x-2.5">
                                 <span class="w-2.5 h-2.5 rounded-full ${sec.dotColor}"></span>
                                 <span class="tracking-wide">${sec.title}</span>
                             </div>
-                            <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold ${sec.badge}">${filtered.length} 件</span>
+                            <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold ${sec.badge} section-badge">${totalCount} 件</span>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs">
                                 <thead>
                                     <tr class="bg-white border-b border-stone-100 text-stone-400 font-medium">
                                         <th class="py-2.5 px-4 w-10 text-center"><input type="checkbox" onclick="toggleSelectAll(this, '${sec.key}')" class="rounded border-stone-300"></th>
+                                        <th class="py-2.5 px-4">年度</th>
                                         <th class="py-2.5 px-4">客戶名稱</th>
                                         <th class="py-2.5 px-4">服務細項</th>
                                         <th class="py-2.5 px-4">工作進度</th>
@@ -305,7 +312,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="section-tbody-${sec.key}">
-                                    ${rowsHtml}
+                                    ${allYearRowsHtml}
                                 </tbody>
                             </table>
                         </div>
@@ -315,16 +322,16 @@
 
             container.innerHTML = `
                 <div class="space-y-6">
-                    <!-- 標題與年度專屬工具列：新增、刪除、恢復、搜尋、拋轉 -->
+                    <!-- 頂部工具列：跨年度關鍵字搜尋、新增、刪除、恢復、拋轉 -->
                     <div class="bg-white p-5 rounded-2xl border border-ruili-border shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
-                            <h2 class="text-base font-bold text-stone-900">${year} 年度案件管理中心</h2>
-                            <p class="text-xs text-stone-500">採全集團標準化垂直報表排列，即時管理勾選案件、跨區拋轉與關鍵字搜尋。</p>
+                            <h2 class="text-base font-bold text-stone-950">${year} 年度案件管理中心 <span class="text-xs font-normal text-stone-500 ml-1">（檢視跨年度全集團資料）</span></h2>
+                            <p class="text-xs text-stone-500">搜尋框可直接跨所有年份搜尋全集團案件，支援勾選、刪除、恢復與狀態拋轉。</p>
                         </div>
                         <div class="flex flex-wrap items-center gap-2">
-                            <!-- 關鍵字搜尋框 -->
+                            <!-- 跨年度關鍵字搜尋框 -->
                             <div class="relative">
-                                <input type="text" id="year-search-input" oninput="filterYearCases()" placeholder="搜尋 ${year} 案件..." class="px-3 py-1.5 pl-8 text-xs border border-stone-200 rounded-xl focus:outline-none focus:border-stone-400 w-44">
+                                <input type="text" id="all-year-search-input" oninput="filterAllYearsInManagement()" placeholder="跨年度全集團關鍵字搜尋..." class="px-3 py-1.5 pl-8 text-xs border border-stone-200 rounded-xl focus:outline-none focus:border-stone-400 w-52">
                                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-stone-400 text-[10px]"></i>
                             </div>
                             <!-- 新增按鈕 -->
@@ -332,15 +339,15 @@
                                 <i class="fa-solid fa-plus text-[10px]"></i> 新增
                             </button>
                             <!-- 刪除按鈕 -->
-                            <button onclick="handleDeleteSelected('${year}')" class="px-3 py-1.5 bg-stone-100 hover:bg-rose-50 text-stone-700 hover:text-rose-600 border border-stone-200 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                            <button onclick="handleDeleteSelected()" class="px-3 py-1.5 bg-stone-100 hover:bg-rose-50 text-stone-700 hover:text-rose-600 border border-stone-200 rounded-xl text-xs font-bold transition flex items-center gap-1">
                                 <i class="fa-solid fa-trash-can text-[10px]"></i> 刪除
                             </button>
                             <!-- 恢復按鈕 -->
-                            <button onclick="handleRestoreSelected('${year}')" class="px-3 py-1.5 bg-stone-100 hover:bg-emerald-50 text-stone-700 hover:text-emerald-600 border border-stone-200 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                            <button onclick="handleRestoreSelected()" class="px-3 py-1.5 bg-stone-100 hover:bg-emerald-50 text-stone-700 hover:text-emerald-600 border border-stone-200 rounded-xl text-xs font-bold transition flex items-center gap-1">
                                 <i class="fa-solid fa-rotate-left text-[10px]"></i> 恢復
                             </button>
                             <!-- 案件拋轉下拉選單 -->
-                            <select id="transfer-target-select" onchange="handleTransferSelected('${year}', this)" class="px-3 py-1.5 text-xs border border-stone-300 rounded-xl bg-slate-50 font-bold text-stone-700 focus:outline-none focus:border-sky-500 shadow-xs">
+                            <select id="transfer-target-select" onchange="handleTransferSelected(this, '${year}')" class="px-3 py-1.5 text-xs border border-stone-300 rounded-xl bg-slate-50 font-bold text-stone-700 focus:outline-none focus:border-sky-500 shadow-xs">
                                 <option value="">-- 案件拋轉至... --</option>
                                 <option value="簽約案件">拋轉 ➔ 簽約案件</option>
                                 <option value="案件評估">拋轉 ➔ 案件評估</option>
@@ -359,6 +366,21 @@
             `;
         }
 
+        // 跨年度全集團即時關鍵字搜尋過濾
+        function filterAllYearsInManagement() {
+            const keyword = document.getElementById('all-year-search-input').value.toLowerCase();
+            const rows = document.querySelectorAll('.case-row');
+            
+            rows.forEach(row => {
+                const text = row.getAttribute('data-keyword').toLowerCase();
+                if(text.includes(keyword)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
         // 全選 / 取消全選該區塊
         function toggleSelectAll(masterCheckbox, sectionKey) {
             const tbody = document.querySelector(`.section-tbody-${sectionKey}`);
@@ -367,30 +389,15 @@
             checkboxes.forEach(cb => cb.checked = masterCheckbox.checked);
         }
 
-        // 年度內的關鍵字即時過濾
-        function filterYearCases() {
-            const keyword = document.getElementById('year-search-input').value.toLowerCase();
-            const rows = document.querySelectorAll('.case-row');
-            rows.forEach(row => {
-                const name = row.getAttribute('data-name').toLowerCase();
-                const note = row.getAttribute('data-note').toLowerCase();
-                if(name.includes(keyword) || note.includes(keyword)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-
-        // 模擬：新增案件
-        function openAddNewCaseModal(year) {
-            const clientName = prompt(`【${year} 年度】請輸入新案件客戶名稱：`, '新客戶企業');
+        // 新增案件（預設新增至目前檢視的年度）
+        function openAddNewCaseModal(currentYear) {
+            const clientName = prompt(`【${currentYear} 年度】請輸入新案件客戶名稱：`, '新客戶企業');
             if(!clientName) return;
             const serviceItem = prompt('請輸入服務項目/細項：', '特定工廠登記');
             
-            if(!globalCasesData[year]) globalCasesData[year] = [];
-            globalCasesData[year].push({
-                id: `${year}-${Date.now().toString().slice(-4)}`,
+            if(!globalCasesData[currentYear]) globalCasesData[currentYear] = [];
+            globalCasesData[currentYear].push({
+                id: Date.now().toString().slice(-4),
                 name: serviceItem,
                 client: clientName,
                 service: serviceItem,
@@ -400,12 +407,12 @@
                 status: '案件評估'
             });
 
-            alert(`成功在 ${year} 年度新增案件：${clientName}`);
-            renderYearManagementView(year);
+            alert(`成功在 ${currentYear} 年度新增案件：${clientName}`);
+            renderYearManagementView(currentYear);
         }
 
-        // 模擬：刪除勾選案件（移至廢件或移除）
-        function handleDeleteSelected(year) {
+        // 刪除勾選案件（跨年度識別）
+        function handleDeleteSelected() {
             const checkedBoxes = document.querySelectorAll('.case-checkbox:checked');
             if(checkedBoxes.length === 0) {
                 alert('請先勾選要刪除的案件！');
@@ -413,32 +420,49 @@
             }
             if(!confirm(`確定要刪除選中的 ${checkedBoxes.length} 筆案件嗎？`)) return;
 
-            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
-            globalCasesData[year] = globalCasesData[year].filter(c => !idsToDelete.includes(c.id));
+            checkedBoxes.forEach(cb => {
+                const [yr, id] = cb.value.split(':');
+                if(globalCasesData[yr]) {
+                    globalCasesData[yr] = globalCasesData[yr].filter(c => c.id !== id);
+                }
+            });
             
             alert('已成功刪除勾選案件！');
-            renderYearManagementView(year);
+            // 重新整理畫面
+            const activeYearBtn = document.querySelector(".nav-btn.bg-ruili-brand");
+            let yr = '2026';
+            if(activeYearBtn && activeYearBtn.textContent.includes('案件管理')) {
+                yr = activeYearBtn.textContent.trim().split(' ')[0];
+            }
+            renderYearManagementView(yr);
         }
 
-        // 模擬：恢復勾選案件
-        function handleRestoreSelected(year) {
+        // 恢復勾選案件
+        function handleRestoreSelected() {
             const checkedBoxes = document.querySelectorAll('.case-checkbox:checked');
             if(checkedBoxes.length === 0) {
-                alert('請先勾選要恢復/重設狀態的案件！');
+                alert('請先勾選要恢復的案件！');
                 return;
             }
-            const idsToRestore = Array.from(checkedBoxes).map(cb => cb.value);
-            globalCasesData[year].forEach(c => {
-                if(idsToRestore.includes(c.id)) {
-                    c.status = '案件評估'; // 預設恢復至案件評估
+            checkedBoxes.forEach(cb => {
+                const [yr, id] = cb.value.split(':');
+                if(globalCasesData[yr]) {
+                    globalCasesData[yr].forEach(c => {
+                        if(c.id === id) c.status = '案件評估';
+                    });
                 }
             });
             alert('已成功將勾選案件恢復至「案件評估」！');
-            renderYearManagementView(year);
+            const activeYearBtn = document.querySelector(".nav-btn.bg-ruili-brand");
+            let yr = '2026';
+            if(activeYearBtn && activeYearBtn.textContent.includes('案件管理')) {
+                yr = activeYearBtn.textContent.trim().split(' ')[0];
+            }
+            renderYearManagementView(yr);
         }
 
-        // 模擬：同年份之案件拋轉（只在當年度內部拋轉至指定狀態專區）
-        function handleTransferSelected(year, selectElement) {
+        // 案件拋轉
+        function handleTransferSelected(selectElement, currentYear) {
             const targetStatus = selectElement.value;
             if(!targetStatus) return;
 
@@ -454,15 +478,17 @@
                 return;
             }
 
-            const idsToTransfer = Array.from(checkedBoxes).map(cb => cb.value);
-            globalCasesData[year].forEach(c => {
-                if(idsToTransfer.includes(c.id)) {
-                    c.status = targetStatus; // 更新狀態，使其留在該年度並移動到對應區塊
+            checkedBoxes.forEach(cb => {
+                const [yr, id] = cb.value.split(':');
+                if(globalCasesData[yr]) {
+                    globalCasesData[yr].forEach(c => {
+                        if(c.id === id) c.status = targetStatus;
+                    });
                 }
             });
 
-            alert(`成功將案件拋轉至 ${year} 年度的「${targetStatus}」！`);
-            renderYearManagementView(year);
+            alert(`成功將案件拋轉至「${targetStatus}」！`);
+            renderYearManagementView(currentYear);
         }
 
         // 控制手機版側邊欄開關的函式
