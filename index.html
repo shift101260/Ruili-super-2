@@ -3,22 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>睿立集團｜系統開發底版</title>
+    <title>睿立集團｜專屬系統</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-[#FBF9F5] text-stone-800 flex flex-col h-screen overflow-hidden font-sans">
+<body class="bg-[#FBF9F5] text-stone-800 flex h-screen overflow-hidden font-sans">
 
-    <!-- 主工作區容器 -->
-    <main class="flex-1 flex flex-col h-full overflow-y-auto p-6 md:p-10">
-        <div class="max-w-[96%] mx-auto w-full flex-1 space-y-6">
+    <!-- 側邊導覽列 (保留您要的黑底與睿立集團識別) -->
+    <aside class="w-64 bg-[#2C2A29] text-stone-300 flex flex-col justify-between hidden md:flex border-r border-stone-800">
+        <div>
+            <!-- 品牌 Logo 與名稱 -->
+            <div class="p-6 border-b border-stone-800 flex items-center space-x-3">
+                <div class="bg-[#D4A373] text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold text-xl shadow-xs">睿</div>
+                <div>
+                    <h1 class="text-white font-bold tracking-wider text-sm">睿立集團</h1>
+                    <p class="text-[10px] text-stone-400">RUILI PRECISION ERP</p>
+                </div>
+            </div>
             
-            <!-- 看板 / 區塊主體 -->
+            <!-- 選單區域 (您可以自由在此增減項目) -->
+            <nav class="p-4 space-y-1.5">
+                <div class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-[#D4A373] text-white transition shadow-xs font-medium text-xs">
+                    <i class="fa-solid fa-list-check w-5"></i><span>工作看板系統</span>
+                </div>
+            </nav>
+        </div>
+
+        <!-- 底部身分狀態 -->
+        <div class="p-4 border-t border-stone-800 text-xs text-stone-400 flex items-center justify-between">
+            <span>身分：<strong>管理者</strong></span>
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        </div>
+    </aside>
+
+    <!-- 主畫面內容 -->
+    <main class="flex-1 flex flex-col h-full overflow-y-auto relative">
+        <div class="p-8 max-w-[96%] mx-auto w-full flex-1 space-y-6">
+            
+            <!-- 看板主體區塊 -->
             <section class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-5 pt-2">
                     
                     <!-- 欄位 1 -->
-                    <div class="bg-[#F4F1EA] p-4 rounded-2xl border border-stone-300/60 space-y-4 flex flex-col min-h-[400px]">
+                    <div class="bg-[#F4F1EA] p-4 rounded-2xl border border-stone-300/60 space-y-4 flex flex-col min-h-[500px]">
                         <div class="flex justify-between items-center font-bold text-xs text-stone-700 px-1 uppercase tracking-wider">
                             <span><i class="fa-solid fa-folder-open text-[#D4A373] mr-1.5"></i> 區塊一</span>
                         </div>
@@ -28,7 +55,7 @@
                     </div>
 
                     <!-- 欄位 2 -->
-                    <div class="bg-[#F4F1EA] p-4 rounded-2xl border border-stone-300/60 space-y-4 flex flex-col min-h-[400px]">
+                    <div class="bg-[#F4F1EA] p-4 rounded-2xl border border-stone-300/60 space-y-4 flex flex-col min-h-[500px]">
                         <div class="flex justify-between items-center font-bold text-xs text-stone-700 px-1 uppercase tracking-wider">
                             <span><i class="fa-solid fa-folder-open text-[#D4A373] mr-1.5"></i> 區塊二</span>
                         </div>
@@ -38,7 +65,7 @@
                     </div>
 
                     <!-- 欄位 3 -->
-                    <div class="bg-[#F4F1EA] p-4 rounded-2xl border border-stone-300/60 space-y-4 flex flex-col min-h-[400px]">
+                    <div class="bg-[#F4F1EA] p-4 rounded-2xl border border-stone-300/60 space-y-4 flex flex-col min-h-[500px]">
                         <div class="flex justify-between items-center font-bold text-xs text-stone-700 px-1 uppercase tracking-wider">
                             <span><i class="fa-solid fa-folder-open text-[#D4A373] mr-1.5"></i> 區塊三</span>
                         </div>
@@ -48,7 +75,7 @@
                     </div>
 
                     <!-- 欄位 4 -->
-                    <div class="bg-[#F4F1EA] p-4 rounded-2xl border border-stone-300/60 space-y-4 flex flex-col min-h-[400px]">
+                    <div class="bg-[#F4F1EA] p-4 rounded-2xl border border-stone-300/60 space-y-4 flex flex-col min-h-[500px]">
                         <div class="flex justify-between items-center font-bold text-xs text-stone-700 px-1 uppercase tracking-wider">
                             <span><i class="fa-solid fa-folder-open text-[#D4A373] mr-1.5"></i> 區塊四</span>
                         </div>
