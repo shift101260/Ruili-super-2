@@ -7,20 +7,23 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- 溫潤極簡風專屬色號設定 -->
+    <!-- 引入獨立的全域色號變數樣式檔 -->
+    <link rel="stylesheet" href="./css/variables.css">
+
+    <!-- 讓 Tailwind 能夠抓取我們的 CSS 變數 -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         ruili: {
-                            bg: '#FBF9F5',       /* 主背景色：溫潤米白 */
-                            brand: '#D4A373',    /* 主品牌色：暖焦糖棕 */
-                            sidebar: '#2C2A29',  /* 側邊欄底色：暖木炭灰 */
-                            matcha: '#E9EDC9',   /* 輔助標籤色：柔和抹茶綠 */
-                            pink: '#EED7C5',     /* 輔助強調色：柔杏粉棕 */
-                            dark: '#292524',     /* 深色文字/邊框：深石灰 */
-                            border: '#E7E5E4'    /* 淺色邊框：燕麥灰 */
+                            bg: 'var(--ruili-bg)',
+                            brand: 'var(--ruili-brand)',
+                            sidebar: 'var(--ruili-sidebar)',
+                            matcha: 'var(--ruili-matcha)',
+                            pink: 'var(--ruili-pink)',
+                            dark: 'var(--ruili-dark)',
+                            border: 'var(--ruili-border)'
                         }
                     }
                 }
@@ -52,12 +55,10 @@
                     <i class="fa-solid fa-list-check w-5"></i><span>工作看板</span>
                 </button>
 
-                <!-- 新增：全集團案件總覽（解決跨年份查詢痛點） -->
                 <button onclick="switchModule('all-cases', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-stone-800 text-stone-300 transition">
                     <i class="fa-solid fa-layer-group w-5 text-amber-500"></i><span>全集團案件總覽</span>
                 </button>
 
-                <!-- 年度案件管理群組 -->
                 <div class="pt-2 pb-1 px-3 text-[10px] font-bold uppercase tracking-wider text-stone-500">年度案件快速切換</div>
                 <button onclick="switchModule('year-2027', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition"><i class="fa-solid fa-folder w-4 ml-1"></i><span>2027 案件管理</span></button>
                 <button onclick="switchModule('year-2026', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition"><i class="fa-solid fa-folder w-4 ml-1"></i><span>2026 案件管理</span></button>
@@ -78,7 +79,6 @@
             </nav>
         </div>
 
-        <!-- 底部身分狀態 -->
         <div class="p-4 border-t border-ruili-dark text-xs text-stone-400 flex items-center justify-between bg-ruili-sidebar">
             <span>身分：<strong>管理者</strong></span>
             <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -88,7 +88,6 @@
     <!-- 右側主畫面內容容器 -->
     <main class="flex-1 flex flex-col h-full overflow-y-auto relative bg-ruili-bg">
         <div id="app-container" class="p-8 max-w-[96%] mx-auto w-full flex-1 space-y-6">
-            <!-- 預設載入戰情室 -->
             <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
                 <h2 class="text-lg font-bold text-stone-900">戰情室總覽</h2>
                 <p class="text-xs text-stone-500">歡迎進入睿立集團精密營運系統，請從左側切換功能或年度案件。</p>
@@ -96,7 +95,7 @@
         </div>
     </main>
 
-    <!-- 互動邏輯與動態渲染 -->
+    <!-- 頁面切換控制邏輯 -->
     <script>
         function switchModule(moduleName, btnElement) {
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -111,139 +110,18 @@
             const container = document.getElementById('app-container');
             
             if(moduleName === 'dashboard') {
-                container.innerHTML = `
-                    <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
-                        <h2 class="text-lg font-bold">戰情室總覽</h2>
-                        <p class="text-xs text-stone-500">包含 YoY 財報、案件數、簽約金額與業務通路效益分析。</p>
-                    </div>`;
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">戰情室總覽</h2><p class="text-xs text-stone-500">包含 YoY 財報、案件數與通路效益分析。</p></div>`;
             } else if(moduleName === 'kanban') {
-                container.innerHTML = `
-                    <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
-                        <h2 class="text-lg font-bold">工作看板 SOP</h2>
-                        <p class="text-xs text-stone-500">生產作業流程、推播、紅綠燈與 NAS 日期管控。</p>
-                    </div>`;
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">工作看板 SOP</h2><p class="text-xs text-stone-500">生產作業流程、紅綠燈與推播預警。</p></div>`;
             } else if(moduleName === 'all-cases') {
-                container.innerHTML = `
-                    <div class="space-y-6">
-                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
-                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                                <div>
-                                    <h2 class="text-lg font-bold text-stone-950"><i class="fa-solid fa-layer-group text-ruili-brand mr-2"></i> 全集團案件總覽 (2021 - 2027)</h2>
-                                    <p class="text-xs text-stone-500 mt-0.5">跨年份集中檢索與管理所有歷史及進行中案件，免去逐年查找的困擾</p>
-                                </div>
-                                <div class="flex items-center space-x-2 w-full md:w-auto">
-                                    <div class="relative flex-1 md:w-64">
-                                        <i class="fa-solid fa-search absolute left-3 top-3 text-stone-400 text-xs"></i>
-                                        <input type="text" placeholder="搜尋客戶、地段、介紹人..." class="w-full pl-9 pr-4 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-ruili-brand">
-                                    </div>
-                                    <select class="bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs text-stone-700 focus:outline-none">
-                                        <option value="">所有年份</option>
-                                        <option value="2027">2027</option>
-                                        <option value="2026">2026</option>
-                                        <option value="2025">2025</option>
-                                        <option value="2024">2024</option>
-                                        <option value="2023">2023</option>
-                                        <option value="2022">2022</option>
-                                        <option value="2021">2021</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-white p-12 rounded-2xl border border-ruili-border shadow-2xs text-center space-y-3">
-                            <i class="fa-solid fa-folder-open text-4xl text-stone-300"></i>
-                            <p class="text-xs text-stone-500">目前尚無建檔資料。您可以透過上方搜尋列或點擊左側特定年份進行檢索。</p>
-                        </div>
-                    </div>
-                `;
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">全集團案件總覽</h2><p class="text-xs text-stone-500">跨年份集中檢索所有歷史與進行中案件。</p></div>`;
             } else if(moduleName.startsWith('year-')) {
                 const year = moduleName.split('-')[1];
-                container.innerHTML = `
-                    <div class="space-y-6">
-                        <!-- 頁面標題列與跨年份快速搜尋 -->
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs gap-4">
-                            <div>
-                                <h2 class="text-lg font-bold text-stone-900"><i class="fa-solid fa-folder-tree text-ruili-brand mr-2"></i> ${year} 年度案件管理中心</h2>
-                                <p class="text-xs text-stone-500 mt-0.5">垂直分層管理該年度專案生命週期（簽約、評估、結案、廢件、失敗）</p>
-                            </div>
-                            <div class="flex items-center space-x-3 w-full md:w-auto">
-                                <div class="relative flex-1 md:w-48">
-                                    <i class="fa-solid fa-search absolute left-3 top-2.5 text-stone-400 text-xs"></i>
-                                    <input type="text" placeholder="快速搜尋本年度案件..." class="w-full pl-9 pr-3 py-1.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-ruili-brand">
-                                </div>
-                                <button onclick="alert('開啟新增 ${year} 年度案件表單')" class="bg-ruili-brand hover:bg-[#C28E5F] text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-2xs shrink-0">
-                                    <i class="fa-solid fa-plus mr-1"></i> 建立新案件
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- 1. 簽約案件區塊 -->
-                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
-                            <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-                                <h3 class="font-bold text-sm text-stone-900 flex items-center"><i class="fa-solid fa-file-signature text-amber-600 mr-2"></i> 1. 簽約案件 (Active Contracts)</h3>
-                                <span class="text-xs bg-amber-50 text-amber-800 px-2.5 py-1 rounded-full font-semibold border border-amber-200">進行中</span>
-                            </div>
-                            <div class="p-4 bg-stone-50 rounded-xl border border-stone-100 text-xs text-stone-500 text-center py-6">
-                                ${year} 年度尚無進行中的簽約案件。
-                            </div>
-                        </div>
-
-                        <!-- 2. 案件評估區塊 -->
-                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
-                            <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-                                <h3 class="font-bold text-sm text-stone-900 flex items-center"><i class="fa-solid fa-magnifying-glass-chart text-blue-600 mr-2"></i> 2. 案件評估 (Evaluation & Assessment)</h3>
-                                <span class="text-xs bg-blue-50 text-blue-800 px-2.5 py-1 rounded-full font-semibold border border-blue-200">評估中 / 試算中</span>
-                            </div>
-                            <div class="p-4 bg-stone-50 rounded-xl border border-stone-100 text-xs text-stone-500 text-center py-6">
-                                包含土地基本資料、建物、太陽能與補照試算評估中案件。
-                            </div>
-                        </div>
-
-                        <!-- 3. 結案區塊 -->
-                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
-                            <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-                                <h3 class="font-bold text-sm text-stone-900 flex items-center"><i class="fa-solid fa-flag-checkered text-emerald-600 mr-2"></i> 3. 結案區 (Completed Cases)</h3>
-                                <span class="text-xs bg-emerald-50 text-emerald-800 px-2.5 py-1 rounded-full font-semibold border border-emerald-200">已圓滿結案</span>
-                            </div>
-                            <div class="p-4 bg-stone-50 rounded-xl border border-stone-100 text-xs text-stone-500 text-center py-6">
-                                已完成領證、尾款結清與 PDF 歸檔之歷史案件。
-                            </div>
-                        </div>
-
-                        <!-- 4. 廢件區塊 -->
-                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
-                            <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-                                <h3 class="font-bold text-sm text-stone-900 flex items-center"><i class="fa-solid fa-box-archive text-stone-500 mr-2"></i> 4. 廢件區 (Archived / Dropped)</h3>
-                                <span class="text-xs bg-stone-100 text-stone-600 px-2.5 py-1 rounded-full font-semibold border border-stone-200">已撤回 / 暫停</span>
-                            </div>
-                            <div class="p-4 bg-stone-50 rounded-xl border border-stone-100 text-xs text-stone-500 text-center py-6">
-                                因客戶端因素暫停或主動撤回之案件。
-                            </div>
-                        </div>
-
-                        <!-- 5. 案件失敗區塊 -->
-                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
-                            <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-                                <h3 class="font-bold text-sm text-stone-900 flex items-center"><i class="fa-solid fa-circle-xmark text-red-600 mr-2"></i> 5. 案件失敗 (Failed / Rejected)</h3>
-                                <span class="text-xs bg-red-50 text-red-700 px-2.5 py-1 rounded-full font-semibold border border-red-200">未通過 / 駁回</span>
-                            </div>
-                            <div class="p-4 bg-stone-50 rounded-xl border border-stone-100 text-xs text-stone-500 text-center py-6">
-                                審查未過、未簽約原因追蹤與未成交案件歸檔。
-                            </div>
-                        </div>
-                    </div>
-                `;
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">${year} 年度案件管理中心</h2><p class="text-xs text-stone-500">包含簽約、評估、結案、廢件、失敗五大垂直區塊。</p></div>`;
             } else if(moduleName === 'quotation') {
-                container.innerHTML = `
-                    <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
-                        <h2 class="text-lg font-bold">報價中心</h2>
-                        <p class="text-xs text-stone-500">檢視與列印專案報價單。</p>
-                    </div>`;
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">報價中心</h2><p class="text-xs text-stone-500">報價單與報價藝術預覽。</p></div>`;
             } else if(moduleName === 'closing') {
-                container.innerHTML = `
-                    <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
-                        <h2 class="text-lg font-bold">結案中心</h2>
-                        <p class="text-xs text-stone-500">檢視與導出專案正式結案報告 PDF。</p>
-                    </div>`;
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">結案中心</h2><p class="text-xs text-stone-500">PDF 結案報告與歸檔。</p></div>`;
             }
         }
     </script>
