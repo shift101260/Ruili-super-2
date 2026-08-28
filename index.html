@@ -89,14 +89,12 @@
     <!-- 右側主畫面內容容器 -->
     <main class="ruili-main">
         
-        <!-- 📱 手機版專屬頂部列 (只有在手機螢幕才會顯示) -->
+        <!-- 📱 手機版專屬頂部列 -->
         <div class="mobile-header-bar md:hidden flex items-center justify-between px-4 py-3 bg-[#2C2A29] text-white border-b border-[#292524]">
-            <!-- 左側：Logo 與名稱 -->
             <div class="flex items-center space-x-3">
                 <div class="bg-[#D4A373] text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm shadow-xs">睿</div>
                 <span class="text-xs font-bold tracking-wider">睿立集團系統</span>
             </div>
-            <!-- 右側：漢堡選單按鈕 -->
             <button onclick="toggleSidebar()" class="text-stone-300 hover:text-white p-2 focus:outline-none">
                 <i class="fa-solid fa-bars text-lg"></i>
             </button>
@@ -126,11 +124,87 @@
             const container = document.getElementById('app-container');
             
             if(moduleName === 'dashboard') {
-                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">戰情室總覽</h2><p class="text-xs text-stone-500">包含 YoY 財報、案件數與通路效益分析。</p></div>`;
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-2">
+                            <h2 class="text-base font-bold text-stone-900">戰情室總覽</h2>
+                            <p class="text-xs text-stone-500">掌握集團整體 YoY 財報、營運案件數與跨通路效益分析。</p>
+                        </div>
+                    </div>`;
             } else if(moduleName === 'kanban') {
-                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">工作看板 SOP</h2><p class="text-xs text-stone-500">生產作業流程、紅綠燈與推播預警。</p></div>`;
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-2">
+                            <h2 class="text-base font-bold text-stone-900">工作看板 SOP</h2>
+                            <p class="text-xs text-stone-500">生產作業標準化流程、案件紅綠燈異常與系統推播預警。</p>
+                        </div>
+                    </div>`;
             } else if(moduleName === 'all-cases') {
-                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">全集團案件總覽</h2><p class="text-xs text-stone-500">跨年份集中檢索所有歷史與進行中案件。</p></div>`;
+                // 🌟 全集團案件總覽（跨年份集中檢索）
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-3">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div>
+                                    <h2 class="text-base font-bold text-stone-900">全集團案件總覽</h2>
+                                    <p class="text-xs text-stone-500">跨年份集中檢索所有歷史與進行中案件，掌握全局脈動。</p>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <input type="text" placeholder="搜尋客戶或案名..." class="px-3 py-1.5 text-xs border border-stone-200 rounded-xl focus:outline-none focus:border-stone-400 w-48">
+                                    <select class="px-3 py-1.5 text-xs border border-stone-200 rounded-xl focus:outline-none focus:border-stone-400 bg-white">
+                                        <option>所有年度</option>
+                                        <option>2027</option>
+                                        <option>2026</option>
+                                        <option>2025</option>
+                                        <option>2024</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs">
+                                    <thead>
+                                        <tr class="bg-stone-50/60 border-b border-stone-200 text-stone-400 font-medium">
+                                            <th class="py-3 px-4">年度</th>
+                                            <th class="py-3 px-4">客戶名稱</th>
+                                            <th class="py-3 px-4">服務細項</th>
+                                            <th class="py-3 px-4">工作進度</th>
+                                            <th class="py-3 px-4">簽約金額</th>
+                                            <th class="py-3 px-4">目前狀態</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-stone-100">
+                                        <tr class="hover:bg-stone-50/80">
+                                            <td class="py-3 px-4 text-stone-500 font-bold">2026</td>
+                                            <td class="py-3 px-4 text-stone-900 font-semibold">大晉展</td>
+                                            <td class="py-3 px-4 text-stone-600">特定工廠專用區</td>
+                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-stone-100 text-stone-700 rounded-md text-[11px]">已簽約</span></td>
+                                            <td class="py-3 px-4 text-stone-900 font-bold">NT$ 2,500,000</td>
+                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-md text-[11px] font-bold">簽約中</span></td>
+                                        </tr>
+                                        <tr class="hover:bg-stone-50/80">
+                                            <td class="py-3 px-4 text-stone-500 font-bold">2026</td>
+                                            <td class="py-3 px-4 text-stone-900 font-semibold">信燕</td>
+                                            <td class="py-3 px-4 text-stone-600">特定工廠專用區</td>
+                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-stone-100 text-stone-700 rounded-md text-[11px]">已簽約</span></td>
+                                            <td class="py-3 px-4 text-stone-900 font-bold">NT$ 2,070,000</td>
+                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-md text-[11px] font-bold">簽約中</span></td>
+                                        </tr>
+                                        <tr class="hover:bg-stone-50/80">
+                                            <td class="py-3 px-4 text-stone-500 font-bold">2025</td>
+                                            <td class="py-3 px-4 text-stone-900 font-semibold">潭子綠能</td>
+                                            <td class="py-3 px-4 text-stone-600">綠能用地申設</td>
+                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-stone-100 text-stone-700 rounded-md text-[11px]">全數審查完畢</span></td>
+                                            <td class="py-3 px-4 text-stone-900 font-bold">NT$ 1,500,000</td>
+                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md text-[11px] font-bold">結案歸檔</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>`;
             } else if(moduleName.startsWith('year-')) {
                 const year = moduleName.split('-')[1];
                 
@@ -142,7 +216,6 @@
                     { id: `${year}-05`, name: '北屯區土地重劃案', client: '王董', service: '土地重劃', progress: '廢件', amount: 'NT$ 0', note: '條件不符撤案', status: '廢件' }
                 ];
 
-                // 精修後的沉穩高質感配色 (移除過度鮮豔的背景色，改為俐落的專業風)
                 const sections = [
                     { key: '簽約中', title: '簽約案件', dotColor: 'bg-blue-500', badge: 'bg-blue-50 text-blue-700 border border-blue-200' },
                     { key: '評估中', title: '案件評估', dotColor: 'bg-amber-500', badge: 'bg-amber-50 text-amber-700 border border-amber-200' },
@@ -155,7 +228,7 @@
                     let filtered = cases.filter(c => c.status === sec.key);
                     
                     let rowsHtml = filtered.length > 0 ? filtered.map(c => `
-                        <tr class="border-b border-stone-100 hover:bg-stone-50/80 transition-colors">
+                        <tr class="border-b border-stone-100 hover:bg-stone-50/85 transition-colors">
                             <td class="py-3 px-4 text-stone-900 font-semibold">${c.client}</td>
                             <td class="py-3 px-4 text-stone-600">${c.service}</td>
                             <td class="py-3 px-4"><span class="px-2.5 py-1 bg-stone-100/80 text-stone-700 rounded-lg text-[11px] font-medium">${c.progress}</span></td>
@@ -170,7 +243,6 @@
 
                     return `
                         <div class="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden">
-                            <!-- 高質感標題列：淡雅灰底搭配專屬識別點 -->
                             <div class="px-6 py-3.5 bg-stone-50/60 border-b border-stone-200 flex items-center justify-between">
                                 <div class="font-bold text-xs text-stone-800 flex items-center space-x-2.5">
                                     <span class="w-2.5 h-2.5 rounded-full ${sec.dotColor}"></span>
@@ -178,7 +250,6 @@
                                 </div>
                                 <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold ${sec.badge}">${filtered.length} 件</span>
                             </div>
-                            <!-- 表格清單 -->
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left text-xs">
                                     <thead>
@@ -205,16 +276,92 @@
                             <h2 class="text-base font-bold text-stone-900">${year} 年度案件管理中心</h2>
                             <p class="text-xs text-stone-500">採全集團標準化垂直報表排列，即時掌握各階段案件營運與財務數據。</p>
                         </div>
-                        <!-- 上下垂直堆疊容器 -->
                         <div class="space-y-6">
                             ${sectionsHtml}
                         </div>
                     </div>
                 `;
             } else if(moduleName === 'quotation') {
-                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">報價中心</h2><p class="text-xs text-stone-500">報價單與報價藝術預覽。</p></div>`;
+                // 🌟 報價中心實用版面
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs flex items-center justify-between">
+                            <div>
+                                <h2 class="text-base font-bold text-stone-900">報價中心</h2>
+                                <p class="text-xs text-stone-500">管理各專案之官方報價單、服務計費模組與藝術預覽。</p>
+                            </div>
+                            <button class="px-4 py-2 bg-ruili-brand text-white rounded-xl text-xs font-bold shadow-xs hover:opacity-90 transition">+ 建立新報價</button>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs">
+                                    <thead>
+                                        <tr class="bg-stone-50/60 border-b border-stone-200 text-stone-400 font-medium">
+                                            <th class="py-3 px-4">報價單編號</th>
+                                            <th class="py-3 px-4">客戶 / 企業</th>
+                                            <th class="py-3 px-4">報價項目</th>
+                                            <th class="py-3 px-4">報價金額</th>
+                                            <th class="py-3 px-4">狀態</th>
+                                            <th class="py-3 px-4">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-stone-100">
+                                        <tr class="hover:bg-stone-50/80">
+                                            <td class="py-3 px-4 text-stone-900 font-bold">QT-2026-0801</td>
+                                            <td class="py-3 px-4 text-stone-700 font-semibold">大晉展企業</td>
+                                            <td class="py-3 px-4 text-stone-600">特定工廠專用區規劃</td>
+                                            <td class="py-3 px-4 text-stone-900 font-bold">NT$ 2,500,000</td>
+                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md text-[11px] font-bold">已成交</span></td>
+                                            <td class="py-3 px-4"><button class="text-stone-500 hover:text-stone-900 font-bold">檢視</button></td>
+                                        </tr>
+                                        <tr class="hover:bg-stone-50/80">
+                                            <td class="py-3 px-4 text-stone-900 font-bold">QT-2026-0802</td>
+                                            <td class="py-3 px-4 text-stone-700 font-semibold">信燕實業</td>
+                                            <td class="py-3 px-4 text-stone-600">土地合法化顧問</td>
+                                            <td class="py-3 px-4 text-stone-900 font-bold">NT$ 2,070,000</td>
+                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-md text-[11px] font-bold">審核中</span></td>
+                                            <td class="py-3 px-4"><button class="text-stone-500 hover:text-stone-900 font-bold">檢視</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>`;
             } else if(moduleName === 'closing') {
-                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">結案中心</h2><p class="text-xs text-stone-500">PDF 結案報告與歸檔。</p></div>`;
+                // 🌟 結案中心實用版面
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-1.5">
+                            <h2 class="text-base font-bold text-stone-900">結案中心</h2>
+                            <p class="text-xs text-stone-500">所有已完成專案之 PDF 正式結案報告歸檔與歷史審查查閱。</p>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs">
+                                    <thead>
+                                        <tr class="bg-stone-50/60 border-b border-stone-200 text-stone-400 font-medium">
+                                            <th class="py-3 px-4">結案編號</th>
+                                            <th class="py-3 px-4">客戶名稱</th>
+                                            <th class="py-3 px-4">專案名稱</th>
+                                            <th class="py-3 px-4">歸檔日期</th>
+                                            <th class="py-3 px-4">結案報告</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-stone-100">
+                                        <tr class="hover:bg-stone-50/80">
+                                            <td class="py-3 px-4 text-stone-900 font-bold">CLS-2025-012</td>
+                                            <td class="py-3 px-4 text-stone-700 font-semibold">林總經理</td>
+                                            <td class="py-3 px-4 text-stone-600">潭子區綠能用地申設專案</td>
+                                            <td class="py-3 px-4 text-stone-500">2025-11-20</td>
+                                            <td class="py-3 px-4"><button class="px-2.5 py-1 bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-lg text-[11px] font-bold transition"><i class="fa-solid fa-file-pdf text-rose-500 mr-1"></i>下載 PDF</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>`;
             }
         }
 
