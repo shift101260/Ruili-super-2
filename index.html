@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>睿立集團｜專屬系統</title>
+    <title>睿立集團｜精密營運管理與結案系統</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- 睿立集團專屬溫潤極簡風色號設定 -->
+    <!-- 溫潤極簡風專屬色號設定 -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         ruili: {
-                            bg: '#FBF9F5',       /* 主背景色：溫潤米白 / 燕麥奶色 */
-                            brand: '#D4A373',    /* 主品牌色：暖焦糖棕 / 大地奶茶色 */
-                            sidebar: '#2C2A29',  /* 側邊欄底色：暖木炭灰 / 深褐炭色 */
-                            matcha: '#E9EDC9',   /* 輔助標籤色：柔和抹茶綠 / 灰綠色 */
-                            pink: '#EED7C5',     /* 輔助強調色：柔杏粉棕 / 暖肉粉色 */
-                            dark: '#292524',     /* 深色文字/邊框：深石灰 / 暖墨色 */
-                            border: '#E7E5E4'    /* 淺色邊框：燕麥灰 / 暖卡其邊框 */
+                            bg: '#FBF9F5',       /* 主背景色：溫潤米白 */
+                            brand: '#D4A373',    /* 主品牌色：暖焦糖棕 */
+                            sidebar: '#2C2A29',  /* 側邊欄底色：暖木炭灰 */
+                            matcha: '#E9EDC9',   /* 輔助標籤色：柔和抹茶綠 */
+                            pink: '#EED7C5',     /* 輔助強調色：柔杏粉棕 */
+                            dark: '#292524',     /* 深色文字/邊框：深石灰 */
+                            border: '#E7E5E4'    /* 淺色邊框：燕麥灰 */
                         }
                     }
                 }
@@ -30,41 +30,116 @@
 </head>
 <body class="bg-ruili-bg text-ruili-dark flex h-screen overflow-hidden font-sans">
 
-    <!-- 側邊導覽列 (套用 #2C2A29 暖木炭灰與 #292524 深石灰邊框) -->
-    <aside class="w-64 bg-ruili-sidebar text-stone-300 flex flex-col justify-between hidden md:flex border-r border-ruili-dark">
+    <!-- 左側功能導覽列 (已依您的需求更新選單項目) -->
+    <aside class="w-64 bg-ruili-sidebar text-stone-300 flex flex-col justify-between hidden md:flex border-r border-ruili-dark overflow-y-auto">
         <div>
             <!-- 品牌 Logo 與名稱 -->
-            <div class="p-6 border-b border-ruili-dark flex items-center space-x-3">
+            <div class="p-6 border-b border-ruili-dark flex items-center space-x-3 sticky top-0 bg-ruili-sidebar z-10">
                 <div class="bg-ruili-brand text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold text-xl shadow-xs">睿</div>
                 <div>
                     <h1 class="text-white font-bold tracking-wider text-sm">睿立集團</h1>
-                    <p class="text-[10px] text-stone-400">RUILI Group</p>
+                    <p class="text-[10px] text-stone-400">RUILI Group ERP</p>
                 </div>
             </div>
             
-            <!-- 選單區域 -->
-            <nav class="p-4 space-y-1.5">
+            <!-- 功能選單 -->
+            <nav id="nav-menu" class="p-4 space-y-1.5 text-xs">
+                <!-- 1. 戰情室總覽 -->
+                <button onclick="switchModule('dashboard', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl bg-ruili-brand text-white transition shadow-xs font-bold">
+                    <i class="fa-solid fa-chart-line w-5"></i><span>戰情室總覽</span>
+                </button>
+                
+                <!-- 2. 工作看板 -->
+                <button onclick="switchModule('kanban', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-stone-800 text-stone-300 transition">
+                    <i class="fa-solid fa-list-check w-5"></i><span>工作看板</span>
+                </button>
+
+                <!-- 3. 年度案件管理群組 -->
+                <div class="pt-2 pb-1 px-3 text-[10px] font-bold uppercase tracking-wider text-stone-500">年度案件管理</div>
+                <button onclick="switchModule('year-2027', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition">
+                    <i class="fa-solid fa-folder w-4 ml-1"></i><span>2027 案件管理</span>
+                </button>
+                <button onclick="switchModule('year-2026', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition">
+                    <i class="fa-solid fa-folder w-4 ml-1"></i><span>2026 案件管理</span>
+                </button>
+                <button onclick="switchModule('year-2025', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition">
+                    <i class="fa-solid fa-folder w-4 ml-1"></i><span>2025 案件管理</span>
+                </button>
+                <button onclick="switchModule('year-2024', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition">
+                    <i class="fa-solid fa-folder w-4 ml-1"></i><span>2024 案件管理</span>
+                </button>
+                <button onclick="switchModule('year-2023', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition">
+                    <i class="fa-solid fa-folder w-4 ml-1"></i><span>2023 案件管理</span>
+                </button>
+                <button onclick="switchModule('year-2022', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition">
+                    <i class="fa-solid fa-folder w-4 ml-1"></i><span>2022 案件管理</span>
+                </button>
+                <button onclick="switchModule('year-2021', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition">
+                    <i class="fa-solid fa-folder w-4 ml-1"></i><span>2021 案件管理</span>
+                </button>
+
+                <div class="pt-2"></div>
+                <!-- 4. 報價中心 -->
+                <button onclick="switchModule('quotation', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-stone-800 text-stone-300 transition">
+                    <i class="fa-solid fa-file-invoice-dollar w-5"></i><span>報價中心</span>
+                </button>
+                
+                <!-- 5. 結案中心 -->
+                <button onclick="switchModule('closing', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-stone-800 text-stone-300 transition">
+                    <i class="fa-solid fa-flag-checkered w-5"></i><span>結案中心</span>
+                </button>
             </nav>
         </div>
 
         <!-- 底部身分狀態 -->
-        <div class="p-4 border-t border-ruili-dark text-xs text-stone-400 flex items-center justify-between">
+        <div class="p-4 border-t border-ruili-dark text-xs text-stone-400 flex items-center justify-between bg-ruili-sidebar">
             <span>身分：<strong>管理者</strong></span>
             <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
         </div>
     </aside>
 
-    <!-- 主畫面內容 (套用 #FBF9F5 溫潤米白底色) -->
+    <!-- 右側主畫面內容容器 -->
     <main class="flex-1 flex flex-col h-full overflow-y-auto relative bg-ruili-bg">
-        <div class="p-8 max-w-[96%] mx-auto w-full flex-1 space-y-6">
-            
-            <!-- 乾淨的主工作區 -->
-            <section class="space-y-6">
-                <!-- 這裡可以直接開始編排您要的內容或表格 -->
-            </section>
-
+        <div id="app-container" class="p-8 max-w-[96%] mx-auto w-full flex-1 space-y-6">
+            <!-- 預設畫面 -->
+            <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
+                <h2 class="text-lg font-bold text-stone-900">戰情室總覽</h2>
+                <p class="text-xs text-stone-500">歡迎進入睿立集團精密營運系統，請從左側切換功能或年度案件。</p>
+            </div>
         </div>
     </main>
 
+    <!-- 模組切換互動邏輯 -->
+    <script>
+        function switchModule(moduleName, btnElement) {
+            // 移除所有按鈕的啟用樣式
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-ruili-brand', 'text-white', 'font-bold', 'shadow-xs');
+                btn.classList.add('hover:bg-stone-800', 'text-stone-300');
+            });
+            
+            // 賦予當前點擊按鈕啟用樣式
+            if(btnElement) {
+                btnElement.classList.remove('hover:bg-stone-800', 'text-stone-300');
+                btnElement.classList.add('bg-ruili-brand', 'text-white', 'font-bold', 'shadow-xs');
+            }
+
+            const container = document.getElementById('app-container');
+            
+            // 依模組顯示對應內容
+            if(moduleName === 'dashboard') {
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">戰情室總覽</h2><p class="text-xs text-stone-500">包含 YoY 財報、案件數、簽約金額與業務通路效益分析（認識你、喜歡你、信任你、追隨你）。</p></div>`;
+            } else if(moduleName === 'kanban') {
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">工作看板 SOP</h2><p class="text-xs text-stone-500">生產作業流程、推播、紅綠燈狀態與 NAS 日期管控。</p></div>`;
+            } else if(moduleName.startsWith('year-')) {
+                const year = moduleName.split('-')[1];
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">${year} 年度案件管理</h2><p class="text-xs text-stone-500">包含特登、土地變更、太陽能試算、補照試算與秘書會計財務資訊管理。</p></div>`;
+            } else if(moduleName === 'quotation') {
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">報價中心</h2><p class="text-xs text-stone-500">檢視與列印專案報價單（報價的藝術）。</p></div>`;
+            } else if(moduleName === 'closing') {
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">結案中心</h2><p class="text-xs text-stone-500">檢視與導出專案正式結案報告 PDF。</p></div>`;
+            }
+        }
+    </script>
 </body>
 </html>
