@@ -138,6 +138,11 @@
                 container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">結案中心</h2><p class="text-xs text-stone-500">PDF 結案報告與歸檔。</p></div>`;
             }
         }
+        // 控制手機版側邊欄開關的函式
+        function toggleMobileSidebar() {
+            const sidebar = document.querySelector('.ruili-sidebar');
+            sidebar.classList.toggle('mobile-open');
+        }
     </script>
 </body>
 </html>
