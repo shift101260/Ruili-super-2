@@ -30,7 +30,7 @@
 </head>
 <body class="bg-ruili-bg text-ruili-dark flex h-screen overflow-hidden font-sans">
 
-    <!-- 左側功能導覽列 (已依您的需求更新選單項目) -->
+    <!-- 左側功能導覽列 -->
     <aside class="w-64 bg-ruili-sidebar text-stone-300 flex flex-col justify-between hidden md:flex border-r border-ruili-dark overflow-y-auto">
         <div>
             <!-- 品牌 Logo 與名稱 -->
@@ -44,47 +44,29 @@
             
             <!-- 功能選單 -->
             <nav id="nav-menu" class="p-4 space-y-1.5 text-xs">
-                <!-- 1. 戰情室總覽 -->
                 <button onclick="switchModule('dashboard', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl bg-ruili-brand text-white transition shadow-xs font-bold">
                     <i class="fa-solid fa-chart-line w-5"></i><span>戰情室總覽</span>
                 </button>
                 
-                <!-- 2. 工作看板 -->
                 <button onclick="switchModule('kanban', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-stone-800 text-stone-300 transition">
                     <i class="fa-solid fa-list-check w-5"></i><span>工作看板</span>
                 </button>
 
-                <!-- 3. 年度案件管理群組 -->
+                <!-- 年度案件管理群組 -->
                 <div class="pt-2 pb-1 px-3 text-[10px] font-bold uppercase tracking-wider text-stone-500">年度案件管理</div>
-                <button onclick="switchModule('year-2027', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition">
-                    <i class="fa-solid fa-folder w-4 ml-1"></i><span>2027 案件管理</span>
-                </button>
-                <button onclick="switchModule('year-2026', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition">
-                    <i class="fa-solid fa-folder w-4 ml-1"></i><span>2026 案件管理</span>
-                </button>
-                <button onclick="switchModule('year-2025', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition">
-                    <i class="fa-solid fa-folder w-4 ml-1"></i><span>2025 案件管理</span>
-                </button>
-                <button onclick="switchModule('year-2024', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition">
-                    <i class="fa-solid fa-folder w-4 ml-1"></i><span>2024 案件管理</span>
-                </button>
-                <button onclick="switchModule('year-2023', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition">
-                    <i class="fa-solid fa-folder w-4 ml-1"></i><span>2023 案件管理</span>
-                </button>
-                <button onclick="switchModule('year-2022', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition">
-                    <i class="fa-solid fa-folder w-4 ml-1"></i><span>2022 案件管理</span>
-                </button>
-                <button onclick="switchModule('year-2021', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition">
-                    <i class="fa-solid fa-folder w-4 ml-1"></i><span>2021 案件管理</span>
-                </button>
+                <button onclick="switchModule('year-2027', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition"><i class="fa-solid fa-folder w-4 ml-1"></i><span>2027 案件管理</span></button>
+                <button onclick="switchModule('year-2026', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition"><i class="fa-solid fa-folder w-4 ml-1"></i><span>2026 案件管理</span></button>
+                <button onclick="switchModule('year-2025', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition"><i class="fa-solid fa-folder w-4 ml-1"></i><span>2025 案件管理</span></button>
+                <button onclick="switchModule('year-2024', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition"><i class="fa-solid fa-folder w-4 ml-1"></i><span>2024 案件管理</span></button>
+                <button onclick="switchModule('year-2023', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition"><i class="fa-solid fa-folder w-4 ml-1"></i><span>2023 案件管理</span></button>
+                <button onclick="switchModule('year-2022', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition"><i class="fa-solid fa-folder w-4 ml-1"></i><span>2022 案件管理</span></button>
+                <button onclick="switchModule('year-2021', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2 rounded-xl hover:bg-stone-800 text-stone-300 transition"><i class="fa-solid fa-folder w-4 ml-1"></i><span>2021 案件管理</span></button>
 
                 <div class="pt-2"></div>
-                <!-- 4. 報價中心 -->
                 <button onclick="switchModule('quotation', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-stone-800 text-stone-300 transition">
                     <i class="fa-solid fa-file-invoice-dollar w-5"></i><span>報價中心</span>
                 </button>
                 
-                <!-- 5. 結案中心 -->
                 <button onclick="switchModule('closing', this)" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-stone-800 text-stone-300 transition">
                     <i class="fa-solid fa-flag-checkered w-5"></i><span>結案中心</span>
                 </button>
@@ -101,7 +83,7 @@
     <!-- 右側主畫面內容容器 -->
     <main class="flex-1 flex flex-col h-full overflow-y-auto relative bg-ruili-bg">
         <div id="app-container" class="p-8 max-w-[96%] mx-auto w-full flex-1 space-y-6">
-            <!-- 預設畫面 -->
+            <!-- 預設載入戰情室 -->
             <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
                 <h2 class="text-lg font-bold text-stone-900">戰情室總覽</h2>
                 <p class="text-xs text-stone-500">歡迎進入睿立集團精密營運系統，請從左側切換功能或年度案件。</p>
@@ -109,16 +91,14 @@
         </div>
     </main>
 
-    <!-- 模組切換互動邏輯 -->
+    <!-- 互動邏輯與動態渲染 -->
     <script>
         function switchModule(moduleName, btnElement) {
-            // 移除所有按鈕的啟用樣式
+            // 切換按鈕樣式
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('bg-ruili-brand', 'text-white', 'font-bold', 'shadow-xs');
                 btn.classList.add('hover:bg-stone-800', 'text-stone-300');
             });
-            
-            // 賦予當前點擊按鈕啟用樣式
             if(btnElement) {
                 btnElement.classList.remove('hover:bg-stone-800', 'text-stone-300');
                 btnElement.classList.add('bg-ruili-brand', 'text-white', 'font-bold', 'shadow-xs');
@@ -126,18 +106,102 @@
 
             const container = document.getElementById('app-container');
             
-            // 依模組顯示對應內容
             if(moduleName === 'dashboard') {
-                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">戰情室總覽</h2><p class="text-xs text-stone-500">包含 YoY 財報、案件數、簽約金額與業務通路效益分析（認識你、喜歡你、信任你、追隨你）。</p></div>`;
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
+                        <h2 class="text-lg font-bold">戰情室總覽</h2>
+                        <p class="text-xs text-stone-500">包含 YoY 財報、案件數、簽約金額與業務通路效益分析。</p>
+                    </div>`;
             } else if(moduleName === 'kanban') {
-                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">工作看板 SOP</h2><p class="text-xs text-stone-500">生產作業流程、推播、紅綠燈狀態與 NAS 日期管控。</p></div>`;
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
+                        <h2 class="text-lg font-bold">工作看板 SOP</h2>
+                        <p class="text-xs text-stone-500">生產作業流程、推播、紅綠燈與 NAS 日期管控。</p>
+                    </div>`;
             } else if(moduleName.startsWith('year-')) {
                 const year = moduleName.split('-')[1];
-                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">${year} 年度案件管理</h2><p class="text-xs text-stone-500">包含特登、土地變更、太陽能試算、補照試算與秘書會計財務資訊管理。</p></div>`;
+                // 渲染由上到下的五大分類區塊
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <!-- 頁面標題列 -->
+                        <div class="flex justify-between items-center bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs">
+                            <div>
+                                <h2 class="text-lg font-bold text-stone-900"><i class="fa-solid fa-folder-tree text-ruili-brand mr-2"></i> ${year} 年度案件管理中心</h2>
+                                <p class="text-xs text-stone-500 mt-0.5">垂直分層管理該年度所有專案生命週期（簽約、評估、結案、廢件、失敗）</p>
+                            </div>
+                            <button onclick="alert('開啟新增 ${year} 年度案件表單')" class="bg-ruili-brand hover:bg-[#C28E5F] text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-2xs">
+                                <i class="fa-solid fa-plus mr-1"></i> 建立新案件
+                            </button>
+                        </div>
+
+                        <!-- 1. 簽約案件區塊 -->
+                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
+                            <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+                                <h3 class="font-bold text-sm text-stone-900 flex items-center"><i class="fa-solid fa-file-signature text-amber-600 mr-2"></i> 1. 簽約案件 (Active Contracts)</h3>
+                                <span class="text-xs bg-amber-50 text-amber-800 px-2.5 py-1 rounded-full font-semibold border border-amber-200">進行中</span>
+                            </div>
+                            <div class="p-4 bg-stone-50 rounded-xl border border-stone-100 text-xs text-stone-500 text-center py-6">
+                                尚無進行中的簽約案件，點擊上方「建立新案件」開始新增。
+                            </div>
+                        </div>
+
+                        <!-- 2. 案件評估區塊 -->
+                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
+                            <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+                                <h3 class="font-bold text-sm text-stone-900 flex items-center"><i class="fa-solid fa-magnifying-glass-chart text-blue-600 mr-2"></i> 2. 案件評估 (Evaluation & Assessment)</h3>
+                                <span class="text-xs bg-blue-50 text-blue-800 px-2.5 py-1 rounded-full font-semibold border border-blue-200">評估中 / 試算中</span>
+                            </div>
+                            <div class="p-4 bg-stone-50 rounded-xl border border-stone-100 text-xs text-stone-500 text-center py-6">
+                                包含土地基本資料、建物、太陽能與補照試算評估中案件。
+                            </div>
+                        </div>
+
+                        <!-- 3. 結案區塊 -->
+                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
+                            <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+                                <h3 class="font-bold text-sm text-stone-900 flex items-center"><i class="fa-solid fa-flag-checkered text-emerald-600 mr-2"></i> 3. 結案區 (Completed Cases)</h3>
+                                <span class="text-xs bg-emerald-50 text-emerald-800 px-2.5 py-1 rounded-full font-semibold border border-emerald-200">已圓滿結案</span>
+                            </div>
+                            <div class="p-4 bg-stone-50 rounded-xl border border-stone-100 text-xs text-stone-500 text-center py-6">
+                                已完成領證、尾款結清與 PDF 歸檔之歷史案件。
+                            </div>
+                        </div>
+
+                        <!-- 4. 廢件區塊 -->
+                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
+                            <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+                                <h3 class="font-bold text-sm text-stone-900 flex items-center"><i class="fa-solid fa-box-archive text-stone-500 mr-2"></i> 4. 廢件區 (Archived / Dropped)</h3>
+                                <span class="text-xs bg-stone-100 text-stone-600 px-2.5 py-1 rounded-full font-semibold border border-stone-200">已撤回 / 暫停</span>
+                            </div>
+                            <div class="p-4 bg-stone-50 rounded-xl border border-stone-100 text-xs text-stone-500 text-center py-6">
+                                因客戶端因素暫停或主動撤回之案件。
+                            </div>
+                        </div>
+
+                        <!-- 5. 案件失敗區塊 -->
+                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
+                            <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+                                <h3 class="font-bold text-sm text-stone-900 flex items-center"><i class="fa-solid fa-circle-xmark text-red-600 mr-2"></i> 5. 案件失敗 (Failed / Rejected)</h3>
+                                <span class="text-xs bg-red-50 text-red-700 px-2.5 py-1 rounded-full font-semibold border border-red-200">未通過 / 駁回</span>
+                            </div>
+                            <div class="p-4 bg-stone-50 rounded-xl border border-stone-100 text-xs text-stone-500 text-center py-6">
+                                審查未過、未簽約原因追蹤與未成交案件歸檔。
+                            </div>
+                        </div>
+                    </div>
+                `;
             } else if(moduleName === 'quotation') {
-                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">報價中心</h2><p class="text-xs text-stone-500">檢視與列印專案報價單（報價的藝術）。</p></div>`;
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
+                        <h2 class="text-lg font-bold">報價中心</h2>
+                        <p class="text-xs text-stone-500">檢視與列印專案報價單。</p>
+                    </div>`;
             } else if(moduleName === 'closing') {
-                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">結案中心</h2><p class="text-xs text-stone-500">檢視與導出專案正式結案報告 PDF。</p></div>`;
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
+                        <h2 class="text-lg font-bold">結案中心</h2>
+                        <p class="text-xs text-stone-500">檢視與導出專案正式結案報告 PDF。</p>
+                    </div>`;
             }
         }
     </script>
