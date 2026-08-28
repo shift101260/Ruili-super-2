@@ -47,7 +47,6 @@ body {
 
 /* 4. 手機直式響應式設定 (RWD - 螢幕小於 768px 時觸發) */
 @media (max-width: 768px) {
-    /* 手機直式時，側邊欄預設收合在畫面左側外 */
     .ruili-sidebar {
         position: fixed;
         top: 0;
@@ -57,16 +56,14 @@ body {
         transform: translateX(-100%);
     }
 
-    /* 當加上這個 class 時，側邊欄滑出顯示 */
     .ruili-sidebar.mobile-open {
         transform: translateX(0);
     }
 
-    /* 手機版頂部導覽列按鈕區 */
     .mobile-header-bar {
         display: flex;
         align-items: center;
-        justify-between;
+        justify-content: space-between;
         padding: 1rem;
         background-color: var(--ruili-sidebar);
         color: white;
