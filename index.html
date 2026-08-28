@@ -109,8 +109,29 @@
         </div>
     </main>
 
-    <!-- 頁面切換控制邏輯 -->
+    <!-- 頁面切換與控制邏輯 -->
     <script>
+        // 模擬全域案件資料庫 (支援跨年度與同年份狀態拋轉)
+        let globalCasesData = {
+            '2027': [
+                { id: '2027-01', name: '烏日區未來產業專區', client: '何董事長', service: '土地變更', progress: '評估中', amount: 'NT$ 3,000,000', note: '審查準備中', status: '評估中' }
+            ],
+            '2026': [
+                { id: '2026-01', name: '大雅區農地變更專案', client: '張先生', service: '農地變更', progress: '簽約中', amount: 'NT$ 2,500,000', note: '預計118通檢', status: '簽約案件' },
+                { id: '2026-02', name: '烏日區工廠合法化', client: '黃董事長', service: '特定工廠專用區', progress: '評估中', amount: 'NT$ 2,070,000', note: '廠房打掉重蓋，太陽能自建', status: '案件評估' },
+                { id: '2026-03', name: '潭子區綠能用地申設', client: '林總經理', service: '綠能申設', progress: '結案歸檔', amount: 'NT$ 1,500,000', note: '已完成全數審查', status: '結案中心' },
+                { id: '2026-04', name: '西屯區資產配置顧問', client: '陳小姐', service: '資產顧問', progress: '失敗', amount: 'NT$ 0', note: '客戶端暫緩投資', status: '失敗案件' },
+                { id: '2026-05', name: '北屯區土地重劃案', client: '王董', service: '土地重劃', progress: '廢件', amount: 'NT$ 0', note: '條件不符撤案', status: '廢件專區' }
+            ],
+            '2025': [
+                { id: '2025-01', name: '潭子綠能廠房申設', client: '林總經理', service: '綠能申設', progress: '已結案', amount: 'NT$ 1,800,000', note: '完美結案', status: '結案中心' }
+            ],
+            '2024': [],
+            '2023': [],
+            '2022': [],
+            '2021': []
+        };
+
         function switchModule(moduleName, btnElement) {
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('bg-ruili-brand', 'text-white', 'font-bold', 'shadow-xs');
@@ -150,14 +171,7 @@
                                     <p class="text-xs text-stone-500">跨年份集中檢索所有歷史與進行中案件，掌握全局脈動。</p>
                                 </div>
                                 <div class="flex items-center space-x-2">
-                                    <input type="text" placeholder="搜尋客戶或案名..." class="px-3 py-1.5 text-xs border border-stone-200 rounded-xl focus:outline-none focus:border-stone-400 w-48">
-                                    <select class="px-3 py-1.5 text-xs border border-stone-200 rounded-xl focus:outline-none focus:border-stone-400 bg-white">
-                                        <option>所有年度</option>
-                                        <option>2027</option>
-                                        <option>2026</option>
-                                        <option>2025</option>
-                                        <option>2024</option>
-                                    </select>
+                                    <input type="text" id="global-search-input" oninput="filterGlobalCases()" placeholder="全集團關鍵字搜尋..." class="px-3 py-1.5 text-xs border border-stone-200 rounded-xl focus:outline-none focus:border-stone-400 w-48">
                                 </div>
                             </div>
                         </div>
@@ -175,31 +189,8 @@
                                             <th class="py-3 px-4">目前狀態</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="divide-y divide-stone-100">
-                                        <tr class="hover:bg-stone-50/80">
-                                            <td class="py-3 px-4 text-stone-500 font-bold">2026</td>
-                                            <td class="py-3 px-4 text-stone-900 font-semibold">大晉展</td>
-                                            <td class="py-3 px-4 text-stone-600">特定工廠專用區</td>
-                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-stone-100 text-stone-700 rounded-md text-[11px]">已簽約</span></td>
-                                            <td class="py-3 px-4 text-stone-900 font-bold">NT$ 2,500,000</td>
-                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-md text-[11px] font-bold">簽約中</span></td>
-                                        </tr>
-                                        <tr class="hover:bg-stone-50/80">
-                                            <td class="py-3 px-4 text-stone-500 font-bold">2026</td>
-                                            <td class="py-3 px-4 text-stone-900 font-semibold">信燕</td>
-                                            <td class="py-3 px-4 text-stone-600">特定工廠專用區</td>
-                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-stone-100 text-stone-700 rounded-md text-[11px]">已簽約</span></td>
-                                            <td class="py-3 px-4 text-stone-900 font-bold">NT$ 2,070,000</td>
-                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-md text-[11px] font-bold">簽約中</span></td>
-                                        </tr>
-                                        <tr class="hover:bg-stone-50/80">
-                                            <td class="py-3 px-4 text-stone-500 font-bold">2025</td>
-                                            <td class="py-3 px-4 text-stone-900 font-semibold">潭子綠能</td>
-                                            <td class="py-3 px-4 text-stone-600">綠能用地申設</td>
-                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-stone-100 text-stone-700 rounded-md text-[11px]">全數審查完畢</span></td>
-                                            <td class="py-3 px-4 text-stone-900 font-bold">NT$ 1,500,000</td>
-                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md text-[11px] font-bold">結案歸檔</span></td>
-                                        </tr>
+                                    <tbody id="global-cases-tbody" class="divide-y divide-stone-100">
+                                        ${renderAllCasesRows()}
                                     </tbody>
                                 </table>
                             </div>
@@ -207,82 +198,8 @@
                     </div>`;
             } else if(moduleName.startsWith('year-')) {
                 const year = moduleName.split('-')[1];
-                
-                let cases = [
-                    { id: `${year}-01`, name: '大雅區農地變更專案', client: '張先生', service: '農地變更', progress: '簽約中', amount: 'NT$ 2,500,000', note: '預計118通檢', status: '簽約中' },
-                    { id: `${year}-02`, name: '烏日區工廠合法化', client: '黃董事長', service: '特定工廠專用區', progress: '評估中', amount: 'NT$ 2,070,000', note: '廠房打掉重蓋，太陽能自建', status: '評估中' },
-                    { id: `${year}-03`, name: '潭子區綠能用地申設', client: '林總經理', service: '綠能申設', progress: '結案歸檔', amount: 'NT$ 1,500,000', note: '已完成全數審查', status: '結案歸檔' },
-                    { id: `${year}-04`, name: '西屯區資產配置顧問', client: '陳小姐', service: '資產顧問', progress: '失敗', amount: 'NT$ 0', note: '客戶端暫緩投資', status: '失敗' },
-                    { id: `${year}-05`, name: '北屯區土地重劃案', client: '王董', service: '土地重劃', progress: '廢件', amount: 'NT$ 0', note: '條件不符撤案', status: '廢件' }
-                ];
-
-                const sections = [
-                    { key: '簽約中', title: '簽約案件', dotColor: 'bg-blue-500', badge: 'bg-blue-50 text-blue-700 border border-blue-200' },
-                    { key: '評估中', title: '案件評估', dotColor: 'bg-amber-500', badge: 'bg-amber-50 text-amber-700 border border-amber-200' },
-                    { key: '結案歸檔', title: '結案中心', dotColor: 'bg-emerald-500', badge: 'bg-emerald-50 text-emerald-700 border border-emerald-200' },
-                    { key: '廢件', title: '廢件專區', dotColor: 'bg-stone-400', badge: 'bg-stone-100 text-stone-600 border border-stone-200' },
-                    { key: '失敗', title: '失敗案件', dotColor: 'bg-rose-500', badge: 'bg-rose-50 text-rose-700 border border-rose-200' }
-                ];
-
-                let sectionsHtml = sections.map(sec => {
-                    let filtered = cases.filter(c => c.status === sec.key);
-                    
-                    let rowsHtml = filtered.length > 0 ? filtered.map(c => `
-                        <tr class="border-b border-stone-100 hover:bg-stone-50/85 transition-colors">
-                            <td class="py-3 px-4 text-stone-900 font-semibold">${c.client}</td>
-                            <td class="py-3 px-4 text-stone-600">${c.service}</td>
-                            <td class="py-3 px-4"><span class="px-2.5 py-1 bg-stone-100/80 text-stone-700 rounded-lg text-[11px] font-medium">${c.progress}</span></td>
-                            <td class="py-3 px-4 text-stone-900 font-bold">${c.amount}</td>
-                            <td class="py-3 px-4 text-stone-500 truncate max-w-xs">${c.note}</td>
-                        </tr>
-                    `).join('') : `
-                        <tr>
-                            <td colspan="5" class="py-6 text-center text-stone-400 text-xs">目前無相關案件記錄</td>
-                        </tr>
-                    `;
-
-                    return `
-                        <div class="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden">
-                            <div class="px-6 py-3.5 bg-stone-50/60 border-b border-stone-200 flex items-center justify-between">
-                                <div class="font-bold text-xs text-stone-800 flex items-center space-x-2.5">
-                                    <span class="w-2.5 h-2.5 rounded-full ${sec.dotColor}"></span>
-                                    <span class="tracking-wide">${sec.title}</span>
-                                </div>
-                                <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold ${sec.badge}">${filtered.length} 件</span>
-                            </div>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left text-xs">
-                                    <thead>
-                                        <tr class="bg-white border-b border-stone-100 text-stone-400 font-medium">
-                                            <th class="py-2.5 px-4">客戶名稱</th>
-                                            <th class="py-2.5 px-4">服務細項</th>
-                                            <th class="py-2.5 px-4">工作進度</th>
-                                            <th class="py-2.5 px-4">簽約金額</th>
-                                            <th class="py-2.5 px-4">案件即時說明</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${rowsHtml}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-                container.innerHTML = `
-                    <div class="space-y-6">
-                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-1.5">
-                            <h2 class="text-base font-bold text-stone-900">${year} 年度案件管理中心</h2>
-                            <p class="text-xs text-stone-500">採全集團標準化垂直報表排列，即時掌握各階段案件營運與財務數據。</p>
-                        </div>
-                        <div class="space-y-6">
-                            ${sectionsHtml}
-                        </div>
-                    </div>
-                `;
+                renderYearManagementView(year);
             } else if(moduleName === 'quotation') {
-                // 🌟 報價中心實用版面
                 container.innerHTML = `
                     <div class="space-y-6">
                         <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs flex items-center justify-between">
@@ -292,77 +209,260 @@
                             </div>
                             <button class="px-4 py-2 bg-ruili-brand text-white rounded-xl text-xs font-bold shadow-xs hover:opacity-90 transition">+ 建立新報價</button>
                         </div>
-
-                        <div class="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden">
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left text-xs">
-                                    <thead>
-                                        <tr class="bg-stone-50/60 border-b border-stone-200 text-stone-400 font-medium">
-                                            <th class="py-3 px-4">報價單編號</th>
-                                            <th class="py-3 px-4">客戶 / 企業</th>
-                                            <th class="py-3 px-4">報價項目</th>
-                                            <th class="py-3 px-4">報價金額</th>
-                                            <th class="py-3 px-4">狀態</th>
-                                            <th class="py-3 px-4">操作</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-stone-100">
-                                        <tr class="hover:bg-stone-50/80">
-                                            <td class="py-3 px-4 text-stone-900 font-bold">QT-2026-0801</td>
-                                            <td class="py-3 px-4 text-stone-700 font-semibold">大晉展企業</td>
-                                            <td class="py-3 px-4 text-stone-600">特定工廠專用區規劃</td>
-                                            <td class="py-3 px-4 text-stone-900 font-bold">NT$ 2,500,000</td>
-                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md text-[11px] font-bold">已成交</span></td>
-                                            <td class="py-3 px-4"><button class="text-stone-500 hover:text-stone-900 font-bold">檢視</button></td>
-                                        </tr>
-                                        <tr class="hover:bg-stone-50/80">
-                                            <td class="py-3 px-4 text-stone-900 font-bold">QT-2026-0802</td>
-                                            <td class="py-3 px-4 text-stone-700 font-semibold">信燕實業</td>
-                                            <td class="py-3 px-4 text-stone-600">土地合法化顧問</td>
-                                            <td class="py-3 px-4 text-stone-900 font-bold">NT$ 2,070,000</td>
-                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-md text-[11px] font-bold">審核中</span></td>
-                                            <td class="py-3 px-4"><button class="text-stone-500 hover:text-stone-900 font-bold">檢視</button></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>`;
             } else if(moduleName === 'closing') {
-                // 🌟 結案中心實用版面
                 container.innerHTML = `
                     <div class="space-y-6">
                         <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-1.5">
                             <h2 class="text-base font-bold text-stone-900">結案中心</h2>
                             <p class="text-xs text-stone-500">所有已完成專案之 PDF 正式結案報告歸檔與歷史審查查閱。</p>
                         </div>
-
-                        <div class="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden">
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left text-xs">
-                                    <thead>
-                                        <tr class="bg-stone-50/60 border-b border-stone-200 text-stone-400 font-medium">
-                                            <th class="py-3 px-4">結案編號</th>
-                                            <th class="py-3 px-4">客戶名稱</th>
-                                            <th class="py-3 px-4">專案名稱</th>
-                                            <th class="py-3 px-4">歸檔日期</th>
-                                            <th class="py-3 px-4">結案報告</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-stone-100">
-                                        <tr class="hover:bg-stone-50/80">
-                                            <td class="py-3 px-4 text-stone-900 font-bold">CLS-2025-012</td>
-                                            <td class="py-3 px-4 text-stone-700 font-semibold">林總經理</td>
-                                            <td class="py-3 px-4 text-stone-600">潭子區綠能用地申設專案</td>
-                                            <td class="py-3 px-4 text-stone-500">2025-11-20</td>
-                                            <td class="py-3 px-4"><button class="px-2.5 py-1 bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-lg text-[11px] font-bold transition"><i class="fa-solid fa-file-pdf text-rose-500 mr-1"></i>下載 PDF</button></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>`;
             }
+        }
+
+        // 渲染全集團總覽表格資料列
+        function renderAllCasesRows() {
+            let html = '';
+            for (let yr in globalCasesData) {
+                globalCasesData[yr].forEach(c => {
+                    html += `
+                        <tr class="hover:bg-stone-50/80 case-row-item" data-keyword="${c.client} ${c.name} ${c.service} ${c.note}">
+                            <td class="py-3 px-4 text-stone-500 font-bold">${yr}</td>
+                            <td class="py-3 px-4 text-stone-900 font-semibold">${c.client} (${c.name})</td>
+                            <td class="py-3 px-4 text-stone-600">${c.service}</td>
+                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-stone-100 text-stone-700 rounded-md text-[11px]">${c.progress}</span></td>
+                            <td class="py-3 px-4 text-stone-900 font-bold">${c.amount}</td>
+                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-md text-[11px] font-bold">${c.status}</span></td>
+                        </tr>`;
+                });
+            }
+            return html || `<tr><td colspan="6" class="py-6 text-center text-stone-400 text-xs">目前無任何案件記錄</td></tr>`;
+        }
+
+        // 全集團搜尋過濾
+        function filterGlobalCases() {
+            const keyword = document.getElementById('global-search-input').value.toLowerCase();
+            const rows = document.querySelectorAll('.case-row-item');
+            rows.forEach(row => {
+                const text = row.getAttribute('data-keyword').toLowerCase();
+                row.style.display = text.includes(keyword) ? '' : 'none';
+            });
+        }
+
+        // 渲染指定年度的案件管理中心畫面（含按鈕與勾選框）
+        function renderYearManagementView(year) {
+            const container = document.getElementById('app-container');
+            let cases = globalCasesData[year] || [];
+
+            const sections = [
+                { key: '簽約案件', title: '簽約案件', dotColor: 'bg-blue-500', badge: 'bg-blue-50 text-blue-700 border border-blue-200' },
+                { key: '案件評估', title: '案件評估', dotColor: 'bg-amber-500', badge: 'bg-amber-50 text-amber-700 border border-amber-200' },
+                { key: '結案中心', title: '結案中心', dotColor: 'bg-emerald-500', badge: 'bg-emerald-50 text-emerald-700 border border-emerald-200' },
+                { key: '廢件專區', title: '廢件專區', dotColor: 'bg-stone-400', badge: 'bg-stone-100 text-stone-600 border border-stone-200' },
+                { key: '失敗案件', title: '失敗案件', dotColor: 'bg-rose-500', badge: 'bg-rose-50 text-rose-700 border border-rose-200' }
+            ];
+
+            let sectionsHtml = sections.map(sec => {
+                let filtered = cases.filter(c => c.status === sec.key);
+                
+                let rowsHtml = filtered.length > 0 ? filtered.map(c => `
+                    <tr class="border-b border-stone-100 hover:bg-stone-50/85 transition-colors case-row" data-name="${c.client}" data-note="${c.note}">
+                        <td class="py-3 px-4 w-10 text-center">
+                            <input type="checkbox" class="case-checkbox rounded border-stone-300 text-sky-600 focus:ring-sky-500" value="${c.id}">
+                        </td>
+                        <td class="py-3 px-4 text-stone-900 font-semibold">${c.client}</td>
+                        <td class="py-3 px-4 text-stone-600">${c.service}</td>
+                        <td class="py-3 px-4"><span class="px-2.5 py-1 bg-stone-100/80 text-stone-700 rounded-lg text-[11px] font-medium">${c.progress}</span></td>
+                        <td class="py-3 px-4 text-stone-900 font-bold">${c.amount}</td>
+                        <td class="py-3 px-4 text-stone-500 truncate max-w-xs">${c.note}</td>
+                    </tr>
+                `).join('') : `
+                    <tr>
+                        <td colspan="6" class="py-6 text-center text-stone-400 text-xs">目前無相關案件記錄</td>
+                    </tr>
+                `;
+
+                return `
+                    <div class="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden mb-6">
+                        <div class="px-6 py-3.5 bg-stone-50/60 border-b border-stone-200 flex items-center justify-between">
+                            <div class="font-bold text-xs text-stone-800 flex items-center space-x-2.5">
+                                <span class="w-2.5 h-2.5 rounded-full ${sec.dotColor}"></span>
+                                <span class="tracking-wide">${sec.title}</span>
+                            </div>
+                            <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold ${sec.badge}">${filtered.length} 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="bg-white border-b border-stone-100 text-stone-400 font-medium">
+                                        <th class="py-2.5 px-4 w-10 text-center"><input type="checkbox" onclick="toggleSelectAll(this, '${sec.key}')" class="rounded border-stone-300"></th>
+                                        <th class="py-2.5 px-4">客戶名稱</th>
+                                        <th class="py-2.5 px-4">服務細項</th>
+                                        <th class="py-2.5 px-4">工作進度</th>
+                                        <th class="py-2.5 px-4">簽約金額</th>
+                                        <th class="py-2.5 px-4">案件即時說明</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="section-tbody-${sec.key}">
+                                    ${rowsHtml}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <!-- 標題與年度專屬工具列：新增、刪除、恢復、搜尋、拋轉 -->
+                    <div class="bg-white p-5 rounded-2xl border border-ruili-border shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-base font-bold text-stone-900">${year} 年度案件管理中心</h2>
+                            <p class="text-xs text-stone-500">採全集團標準化垂直報表排列，即時管理勾選案件、跨區拋轉與關鍵字搜尋。</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <!-- 關鍵字搜尋框 -->
+                            <div class="relative">
+                                <input type="text" id="year-search-input" oninput="filterYearCases()" placeholder="搜尋 ${year} 案件..." class="px-3 py-1.5 pl-8 text-xs border border-stone-200 rounded-xl focus:outline-none focus:border-stone-400 w-44">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-stone-400 text-[10px]"></i>
+                            </div>
+                            <!-- 新增按鈕 -->
+                            <button onclick="openAddNewCaseModal('${year}')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs">
+                                <i class="fa-solid fa-plus text-[10px]"></i> 新增
+                            </button>
+                            <!-- 刪除按鈕 -->
+                            <button onclick="handleDeleteSelected('${year}')" class="px-3 py-1.5 bg-stone-100 hover:bg-rose-50 text-stone-700 hover:text-rose-600 border border-stone-200 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can text-[10px]"></i> 刪除
+                            </button>
+                            <!-- 恢復按鈕 -->
+                            <button onclick="handleRestoreSelected('${year}')" class="px-3 py-1.5 bg-stone-100 hover:bg-emerald-50 text-stone-700 hover:text-emerald-600 border border-stone-200 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                                <i class="fa-solid fa-rotate-left text-[10px]"></i> 恢復
+                            </button>
+                            <!-- 案件拋轉下拉選單 -->
+                            <select id="transfer-target-select" onchange="handleTransferSelected('${year}', this)" class="px-3 py-1.5 text-xs border border-stone-300 rounded-xl bg-slate-50 font-bold text-stone-700 focus:outline-none focus:border-sky-500 shadow-xs">
+                                <option value="">-- 案件拋轉至... --</option>
+                                <option value="簽約案件">拋轉 ➔ 簽約案件</option>
+                                <option value="案件評估">拋轉 ➔ 案件評估</option>
+                                <option value="結案中心">拋轉 ➔ 結案中心</option>
+                                <option value="廢件專區">拋轉 ➔ 廢件專區</option>
+                                <option value="失敗案件">拋轉 ➔ 失敗案件</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 垂直區塊列表 -->
+                    <div class="space-y-6">
+                        ${sectionsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 全選 / 取消全選該區塊
+        function toggleSelectAll(masterCheckbox, sectionKey) {
+            const tbody = document.querySelector(`.section-tbody-${sectionKey}`);
+            if(!tbody) return;
+            const checkboxes = tbody.querySelectorAll('.case-checkbox');
+            checkboxes.forEach(cb => cb.checked = masterCheckbox.checked);
+        }
+
+        // 年度內的關鍵字即時過濾
+        function filterYearCases() {
+            const keyword = document.getElementById('year-search-input').value.toLowerCase();
+            const rows = document.querySelectorAll('.case-row');
+            rows.forEach(row => {
+                const name = row.getAttribute('data-name').toLowerCase();
+                const note = row.getAttribute('data-note').toLowerCase();
+                if(name.includes(keyword) || note.includes(keyword)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // 模擬：新增案件
+        function openAddNewCaseModal(year) {
+            const clientName = prompt(`【${year} 年度】請輸入新案件客戶名稱：`, '新客戶企業');
+            if(!clientName) return;
+            const serviceItem = prompt('請輸入服務項目/細項：', '特定工廠登記');
+            
+            if(!globalCasesData[year]) globalCasesData[year] = [];
+            globalCasesData[year].push({
+                id: `${year}-${Date.now().toString().slice(-4)}`,
+                name: serviceItem,
+                client: clientName,
+                service: serviceItem,
+                progress: '評估中',
+                amount: 'NT$ 1,000,000',
+                note: '新建立案件',
+                status: '案件評估'
+            });
+
+            alert(`成功在 ${year} 年度新增案件：${clientName}`);
+            renderYearManagementView(year);
+        }
+
+        // 模擬：刪除勾選案件（移至廢件或移除）
+        function handleDeleteSelected(year) {
+            const checkedBoxes = document.querySelectorAll('.case-checkbox:checked');
+            if(checkedBoxes.length === 0) {
+                alert('請先勾選要刪除的案件！');
+                return;
+            }
+            if(!confirm(`確定要刪除選中的 ${checkedBoxes.length} 筆案件嗎？`)) return;
+
+            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
+            globalCasesData[year] = globalCasesData[year].filter(c => !idsToDelete.includes(c.id));
+            
+            alert('已成功刪除勾選案件！');
+            renderYearManagementView(year);
+        }
+
+        // 模擬：恢復勾選案件
+        function handleRestoreSelected(year) {
+            const checkedBoxes = document.querySelectorAll('.case-checkbox:checked');
+            if(checkedBoxes.length === 0) {
+                alert('請先勾選要恢復/重設狀態的案件！');
+                return;
+            }
+            const idsToRestore = Array.from(checkedBoxes).map(cb => cb.value);
+            globalCasesData[year].forEach(c => {
+                if(idsToRestore.includes(c.id)) {
+                    c.status = '案件評估'; // 預設恢復至案件評估
+                }
+            });
+            alert('已成功將勾選案件恢復至「案件評估」！');
+            renderYearManagementView(year);
+        }
+
+        // 模擬：同年份之案件拋轉（只在當年度內部拋轉至指定狀態專區）
+        function handleTransferSelected(year, selectElement) {
+            const targetStatus = selectElement.value;
+            if(!targetStatus) return;
+
+            const checkedBoxes = document.querySelectorAll('.case-checkbox:checked');
+            if(checkedBoxes.length === 0) {
+                alert('請先勾選要拋轉的案件！');
+                selectElement.value = '';
+                return;
+            }
+
+            if(!confirm(`確定要將選中的 ${checkedBoxes.length} 筆案件拋轉至【${targetStatus}】嗎？`)) {
+                selectElement.value = '';
+                return;
+            }
+
+            const idsToTransfer = Array.from(checkedBoxes).map(cb => cb.value);
+            globalCasesData[year].forEach(c => {
+                if(idsToTransfer.includes(c.id)) {
+                    c.status = targetStatus; // 更新狀態，使其留在該年度並移動到對應區塊
+                }
+            });
+
+            alert(`成功將案件拋轉至 ${year} 年度的「${targetStatus}」！`);
+            renderYearManagementView(year);
         }
 
         // 控制手機版側邊欄開關的函式
@@ -370,6 +470,12 @@
             const sidebar = document.querySelector('.ruili-sidebar');
             sidebar.classList.toggle('mobile-open');
         }
+
+        // 預設載入時顯示 2026 年度案件管理
+        window.onload = function() {
+            const defaultBtn = document.querySelector("button[onclick*='year-2026']");
+            switchModule('year-2026', defaultBtn);
+        };
     </script>
 </body>
 </html>
