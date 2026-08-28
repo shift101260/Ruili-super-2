@@ -132,6 +132,22 @@
             '2021': []
         };
 
+        // 🌟 打開建立新案件 Modal
+        function openAddCaseModal(year) {
+            const modal = document.getElementById('add-case-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        // 🌟 關閉建立新案件 Modal
+        function closeAddCaseModal() {
+            const modal = document.getElementById('add-case-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
         function switchModule(moduleName, btnElement) {
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('bg-ruili-brand', 'text-white', 'font-bold', 'shadow-xs');
@@ -325,7 +341,7 @@
                                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-stone-400 text-[10px]"></i>
                             </div>
                             <!-- 新增按鈕 -->
-                            <button onclick="openAddNewCaseModal('${year}')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs">
+                            <button onclick="openAddCaseModal('${year}')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs">
                                 <i class="fa-solid fa-plus text-[10px]"></i> 新增
                             </button>
                             <!-- 刪除按鈕 -->
@@ -377,28 +393,6 @@
             if(!tbody) return;
             const checkboxes = tbody.querySelectorAll('.case-checkbox');
             checkboxes.forEach(cb => cb.checked = masterCheckbox.checked);
-        }
-
-        // 新增案件
-        function openAddNewCaseModal(currentYear) {
-            const clientName = prompt(`【${currentYear} 年度】請輸入新案件客戶名稱：`, '新客戶企業');
-            if(!clientName) return;
-            const serviceItem = prompt('請輸入服務項目/細項：', '特定工廠登記');
-            
-            if(!globalCasesData[currentYear]) globalCasesData[currentYear] = [];
-            globalCasesData[currentYear].push({
-                id: Date.now().toString().slice(-4),
-                name: serviceItem,
-                client: clientName,
-                service: serviceItem,
-                progress: '評估中',
-                amount: 'NT$ 1,000,000',
-                note: '新建立案件',
-                status: '案件評估'
-            });
-
-            alert(`成功在 ${currentYear} 年度新增案件：${clientName}`);
-            renderYearManagementView(currentYear);
         }
 
         // 刪除勾選案件
