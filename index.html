@@ -133,7 +133,62 @@
                 container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">全集團案件總覽</h2><p class="text-xs text-stone-500">跨年份集中檢索所有歷史與進行中案件。</p></div>`;
             } else if(moduleName.startsWith('year-')) {
                 const year = moduleName.split('-')[1];
-                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">${year} 年度案件管理中心</h2><p class="text-xs text-stone-500">包含簽約、評估、結案、廢件、失敗五大垂直區塊。</p></div>`;
+                
+                // 模擬該年度的五大狀態案件資料
+                let cases = [
+                    { id: `${year}-01`, name: '大雅區農地變更專案', client: '張先生', status: '簽約中' },
+                    { id: `${year}-02`, name: '烏日區工廠合法化', client: '黃董事長', status: '評估中' },
+                    { id: `${year}-03`, name: '潭子區綠能用地申設', client: '林總經理', status: '結案歸檔' },
+                    { id: `${year}-04`, name: '西屯區資產配置顧問', client: '陳小姐', status: '失敗' },
+                    { id: `${year}-05`, name: '北屯區土地重劃案', client: '王董', status: '廢件' }
+                ];
+
+                // 建立五大垂直區塊的分類容器
+                const statuses = [
+                    { key: '簽約中', title: '1. 簽約區塊', color: 'border-blue-200 bg-blue-50/50 text-blue-900', badge: 'bg-blue-100 text-blue-800' },
+                    { key: '評估中', title: '2. 評估區塊', color: 'border-amber-200 bg-amber-50/50 text-amber-900', badge: 'bg-amber-100 text-amber-800' },
+                    { key: '結案歸檔', title: '3. 結案區塊', color: 'border-emerald-200 bg-emerald-50/50 text-emerald-900', badge: 'bg-emerald-100 text-emerald-800' },
+                    { key: '廢件', title: '4. 廢件區塊', color: 'border-stone-200 bg-stone-100/50 text-stone-700', badge: 'bg-stone-200 text-stone-700' },
+                    { key: '失敗', title: '5. 失敗區塊', color: 'border-rose-200 bg-rose-50/50 text-rose-900', badge: 'bg-rose-100 text-rose-800' }
+                ];
+
+                // 組合五大垂直欄位的 HTML 結構
+                let columnsHtml = statuses.map(col => {
+                    // 過濾出屬於該狀態的案件
+                    let filteredCases = cases.filter(c => c.status === col.key);
+                    let itemsHtml = filteredCases.length > 0 ? filteredCases.map(c => `
+                        <div class="p-3 bg-white rounded-xl border border-stone-200 shadow-2xs space-y-1 text-xs">
+                            <div class="font-bold text-stone-900">${c.id}</div>
+                            <div class="text-stone-700">${c.name}</div>
+                            <div class="text-[10px] text-stone-400">客戶：${c.client}</div>
+                        </div>
+                    `).join('') : `<div class="text-center py-6 text-stone-400 text-xs">目前無案件</div>`;
+
+                    return `
+                        <div class="flex-1 min-w-[220px] rounded-2xl border ${col.color} p-4 flex flex-col space-y-3 shadow-2xs">
+                            <div class="font-bold text-xs flex items-center justify-between pb-2 border-b border-stone-200/60">
+                                <span>${col.title}</span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${col.badge}">${filteredCases.length}</span>
+                            </div>
+                            <div class="space-y-2 flex-1">
+                                ${itemsHtml}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-2">
+                            <h2 class="text-lg font-bold text-stone-900">${year} 年度案件管理中心</h2>
+                            <p class="text-xs text-stone-500">採五大垂直區塊並列檢視（簽約、評估、結案、廢件、失敗），全方位掌握集團營運進度。</p>
+                        </div>
+                        <!-- 五大垂直區塊 RWD 橫向滾動容器 -->
+                        <div class="flex gap-4 overflow-x-auto pb-4">
+                            ${columnsHtml}
+                        </div>
+                    </div>
+                `;
             } else if(moduleName === 'quotation') {
                 container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4"><h2 class="text-lg font-bold">報價中心</h2><p class="text-xs text-stone-500">報價單與報價藝術預覽。</p></div>`;
             } else if(moduleName === 'closing') {
