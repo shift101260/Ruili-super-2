@@ -100,7 +100,7 @@
             </button>
         </div>
 
-        <!-- 原本的主畫面內容 -->
+        <!-- 主畫面內容 -->
         <div id="app-container" class="ruili-container space-y-6">
             <div class="bg-white p-6 rounded-2xl border border-ruili-border shadow-2xs space-y-4">
                 <h2 class="text-lg font-bold text-stone-900">戰情室總覽</h2>
@@ -111,7 +111,6 @@
 
     <!-- 頁面切換與控制邏輯 -->
     <script>
-        // 模擬全集團案件資料庫
         let globalCasesData = {
             '2027': [
                 { id: '2027-01', name: '烏日區未來產業專區', client: '何董事長', service: '土地變更', progress: '評估中', amount: 'NT$ 3,000,000', note: '審查準備中', status: '案件評估' }
@@ -132,20 +131,14 @@
             '2021': []
         };
 
-        // 🌟 打開建立新案件 Modal
         function openAddCaseModal(year) {
             const modal = document.getElementById('add-case-modal');
-            if (modal) {
-                modal.classList.remove('hidden');
-            }
+            if (modal) modal.classList.remove('hidden');
         }
 
-        // 🌟 關閉建立新案件 Modal
         function closeAddCaseModal() {
             const modal = document.getElementById('add-case-modal');
-            if (modal) {
-                modal.classList.add('hidden');
-            }
+            if (modal) modal.classList.add('hidden');
         }
 
         function switchModule(moduleName, btnElement) {
@@ -193,7 +186,7 @@
 
                         <div class="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden">
                             <div class="overflow-x-auto">
-                                <table class="w-full text-left text-xs">
+                                <table class="w-full text-left text-xs min-w-[650px]">
                                     <thead>
                                         <tr class="bg-stone-50/60 border-b border-stone-200 text-stone-400 font-medium">
                                             <th class="py-3 px-4">年度</th>
@@ -243,11 +236,11 @@
                     html += `
                         <tr class="hover:bg-stone-50/80 case-row-item" data-keyword="${c.client} ${c.name} ${c.service} ${c.note}">
                             <td class="py-3 px-4 text-stone-500 font-bold">${yr}</td>
-                            <td class="py-3 px-4 text-stone-900 font-semibold">${c.client} (${c.name})</td>
-                            <td class="py-3 px-4 text-stone-600">${c.service}</td>
-                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-stone-100 text-stone-700 rounded-md text-[11px]">${c.progress}</span></td>
-                            <td class="py-3 px-4 text-stone-900 font-bold">${c.amount}</td>
-                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-md text-[11px] font-bold">${c.status}</span></td>
+                            <td class="py-3 px-4 text-stone-900 font-semibold whitespace-nowrap">${c.client} (${c.name})</td>
+                            <td class="py-3 px-4 text-stone-600 whitespace-nowrap">${c.service}</td>
+                            <td class="py-3 px-4 whitespace-nowrap"><span class="px-2 py-0.5 bg-stone-100 text-stone-700 rounded-md text-[11px]">${c.progress}</span></td>
+                            <td class="py-3 px-4 text-stone-900 font-bold whitespace-nowrap">${c.amount}</td>
+                            <td class="py-3 px-4 whitespace-nowrap"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-md text-[11px] font-bold">${c.status}</span></td>
                         </tr>`;
                 });
             }
@@ -263,7 +256,6 @@
             });
         }
 
-        // 渲染指定年度案件管理中心（僅顯示當年度資料，搜尋也僅針對當年度）
         function renderYearManagementView(year) {
             const container = document.getElementById('app-container');
             let cases = globalCasesData[year] || [];
@@ -284,11 +276,11 @@
                         <td class="py-3 px-4 w-10 text-center">
                             <input type="checkbox" class="case-checkbox rounded border-stone-300 text-sky-600 focus:ring-sky-500" value="${year}:${c.id}">
                         </td>
-                        <td class="py-3 px-4 text-stone-900 font-semibold">${c.client}</td>
-                        <td class="py-3 px-4 text-stone-600">${c.service}</td>
-                        <td class="py-3 px-4"><span class="px-2.5 py-1 bg-stone-100/80 text-stone-700 rounded-lg text-[11px] font-medium">${c.progress}</span></td>
-                        <td class="py-3 px-4 text-stone-900 font-bold">${c.amount}</td>
-                        <td class="py-3 px-4 text-stone-500 truncate max-w-xs">${c.note}</td>
+                        <td class="py-3 px-4 text-stone-900 font-semibold whitespace-nowrap">${c.client}</td>
+                        <td class="py-3 px-4 text-stone-600 whitespace-nowrap">${c.service}</td>
+                        <td class="py-3 px-4 whitespace-nowrap"><span class="px-2.5 py-1 bg-stone-100/80 text-stone-700 rounded-lg text-[11px] font-medium">${c.progress}</span></td>
+                        <td class="py-3 px-4 text-stone-900 font-bold whitespace-nowrap">${c.amount}</td>
+                        <td class="py-3 px-4 text-stone-500 min-w-[200px]">${c.note}</td>
                     </tr>
                 `).join('') : `
                     <tr>
@@ -305,15 +297,16 @@
                             </div>
                             <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold ${sec.badge} section-badge">${filtered.length} 件</span>
                         </div>
+                        <!-- 加上 overflow-x-auto 與 min-w-[650px]，讓手機版可以左右滑動查看完整表格 -->
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs">
+                            <table class="w-full text-left text-xs min-w-[650px]">
                                 <thead>
                                     <tr class="bg-white border-b border-stone-100 text-stone-400 font-medium">
                                         <th class="py-2.5 px-4 w-10 text-center"><input type="checkbox" onclick="toggleSelectAll(this, '${sec.key}')" class="rounded border-stone-300"></th>
-                                        <th class="py-2.5 px-4">客戶名稱</th>
-                                        <th class="py-2.5 px-4">服務細項</th>
-                                        <th class="py-2.5 px-4">工作進度</th>
-                                        <th class="py-2.5 px-4">簽約金額</th>
+                                        <th class="py-2.5 px-4 whitespace-nowrap">客戶名稱</th>
+                                        <th class="py-2.5 px-4 whitespace-nowrap">服務細項</th>
+                                        <th class="py-2.5 px-4 whitespace-nowrap">工作進度</th>
+                                        <th class="py-2.5 px-4 whitespace-nowrap">簽約金額</th>
                                         <th class="py-2.5 px-4">案件即時說明</th>
                                     </tr>
                                 </thead>
@@ -328,31 +321,26 @@
 
             container.innerHTML = `
                 <div class="space-y-6">
-                    <!-- 頂部工具列：當年度關鍵字搜尋、新增、刪除、恢復、拋轉 -->
+                    <!-- 頂部工具列 -->
                     <div class="bg-white p-5 rounded-2xl border border-ruili-border shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
                             <h2 class="text-base font-bold text-stone-950">${year} 年度案件管理中心</h2>
                             <p class="text-xs text-stone-500">僅顯示與管理 ${year} 年度之案件，支援當年度關鍵字搜尋、勾選、刪除、恢復與狀態拋轉。</p>
                         </div>
                         <div class="flex flex-wrap items-center gap-2">
-                            <!-- 當年度關鍵字搜尋框 -->
                             <div class="relative">
                                 <input type="text" id="year-search-input" oninput="filterCurrentYearManagement()" placeholder="搜尋 ${year} 年度案件..." class="px-3 py-1.5 pl-8 text-xs border border-stone-200 rounded-xl focus:outline-none focus:border-stone-400 w-48">
                                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-stone-400 text-[10px]"></i>
                             </div>
-                            <!-- 新增按鈕 -->
                             <button onclick="openAddCaseModal('${year}')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs">
                                 <i class="fa-solid fa-plus text-[10px]"></i> 新增
                             </button>
-                            <!-- 刪除按鈕 -->
                             <button onclick="handleDeleteSelected('${year}')" class="px-3 py-1.5 bg-stone-100 hover:bg-rose-50 text-stone-700 hover:text-rose-600 border border-stone-200 rounded-xl text-xs font-bold transition flex items-center gap-1">
                                 <i class="fa-solid fa-trash-can text-[10px]"></i> 刪除
                             </button>
-                            <!-- 恢復按鈕 -->
                             <button onclick="handleRestoreSelected('${year}')" class="px-3 py-1.5 bg-stone-100 hover:bg-emerald-50 text-stone-700 hover:text-emerald-600 border border-stone-200 rounded-xl text-xs font-bold transition flex items-center gap-1">
                                 <i class="fa-solid fa-rotate-left text-[10px]"></i> 恢復
                             </button>
-                            <!-- 案件拋轉下拉選單 -->
                             <select id="transfer-target-select" onchange="handleTransferSelected(this, '${year}')" class="px-3 py-1.5 text-xs border border-stone-300 rounded-xl bg-slate-50 font-bold text-stone-700 focus:outline-none focus:border-sky-500 shadow-xs">
                                 <option value="">-- 案件拋轉至 --</option>
                                 <option value="簽約案件">簽約案件</option>
@@ -372,22 +360,15 @@
             `;
         }
 
-        // 當年度案件管理中的即時關鍵字搜尋過濾
         function filterCurrentYearManagement() {
             const keyword = document.getElementById('year-search-input').value.toLowerCase();
             const rows = document.querySelectorAll('.case-row');
-            
             rows.forEach(row => {
                 const text = row.getAttribute('data-keyword').toLowerCase();
-                if(text.includes(keyword)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+                row.style.display = text.includes(keyword) ? '' : 'none';
             });
         }
 
-        // 全選 / 取消全選該區塊
         function toggleSelectAll(masterCheckbox, sectionKey) {
             const tbody = document.querySelector(`.section-tbody-${sectionKey}`);
             if(!tbody) return;
@@ -395,7 +376,6 @@
             checkboxes.forEach(cb => cb.checked = masterCheckbox.checked);
         }
 
-        // 刪除勾選案件
         function handleDeleteSelected(currentYear) {
             const checkedBoxes = document.querySelectorAll('.case-checkbox:checked');
             if(checkedBoxes.length === 0) {
@@ -410,12 +390,10 @@
                     globalCasesData[yr] = globalCasesData[yr].filter(c => c.id !== id);
                 }
             });
-            
             alert('已成功刪除勾選案件！');
             renderYearManagementView(currentYear);
         }
 
-        // 恢復勾選案件
         function handleRestoreSelected(currentYear) {
             const checkedBoxes = document.querySelectorAll('.case-checkbox:checked');
             if(checkedBoxes.length === 0) {
@@ -434,7 +412,6 @@
             renderYearManagementView(currentYear);
         }
 
-        // 案件拋轉（同年度內部各狀態區塊拋轉）
         function handleTransferSelected(selectElement, currentYear) {
             const targetStatus = selectElement.value;
             if(!targetStatus) return;
@@ -464,13 +441,11 @@
             renderYearManagementView(currentYear);
         }
 
-        // 控制手機版側邊欄開關的函式
         function toggleSidebar() {
             const sidebar = document.querySelector('.ruili-sidebar');
             sidebar.classList.toggle('mobile-open');
         }
 
-        // 預設載入時顯示 2026 年度案件管理
         window.onload = function() {
             const defaultBtn = document.querySelector("button[onclick*='year-2026']");
             switchModule('year-2026', defaultBtn);
